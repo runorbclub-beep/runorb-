@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><!-- v20260421-videos -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="metaTitle">摇跑活力指数排行榜 | Energy Index Leaderboard - Bazu-ranking.cn</title>
+  <meta name="description" content="全球首个摇跑运动专属排行榜平台，以活力指数（Energy Index）为核心，涵盖个人排名、品牌排名、城市排名、国家排名，打造公平透明的多维竞技排名体系。">
+  <meta name="keywords" content="摇跑,活力指数,Energy Index,排行榜,运动排名,摇跑运动,运动数据,排名平台">
+  <meta name="author" content="摇跑活力指数排行榜">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://bazu-ranking.cn/">
+
+  <!-- Open Graph / 社交分享 -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="摇跑活力指数排行榜 | Energy Index Leaderboard">
+  <meta property="og:description" content="全球首个摇跑运动专属排行榜平台，以活力指数为核心，打造公平透明的多维竞技排名体系。">
+  <meta property="og:url" content="https://bazu-ranking.cn/">
+  <meta property="og:site_name" content="摇跑活力指数排行榜">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="baidu-site-verification" content="codeva-PynWpAHt3M" />
+
+  <!-- Favicon (可替换为你的 logo) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+
+  <link rel="stylesheet" href="css/style.css?v=1776907041">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+</head>
+<body>
+
+  <!-- ========== Header ========== -->
+  <header class="header" id="header">
+    <div class="header-inner">
+      <div class="logo">
+        <i class="fas fa-bolt"></i>
+        <span data-i18n="siteName">摇跑活力指数</span>
+      </div>
+      <nav class="nav" id="mainNav">
+        <a href="#home" class="nav-item active" data-page="home">
+          <i class="fas fa-home"></i> <span data-i18n="navHome">首页</span>
+        </a>
+        <a href="#leaderboard" class="nav-item" data-page="leaderboard">
+          <i class="fas fa-trophy"></i> <span data-i18n="navRanking">活力排名</span>
+        </a>
+        <a href="#about/intro" class="nav-item" data-page="about" data-section="intro">
+          <i class="fas fa-info-circle"></i> <span data-i18n="navIntro">摇跑介绍</span>
+        </a>
+        <a href="#news" class="nav-item" data-page="news">
+          <i class="fas fa-newspaper"></i> <span data-i18n="navNews">活动新闻</span>
+        </a>
+        <a href="#about/join" class="nav-item" data-page="about" data-section="join">
+          <i class="fas fa-hand-point-up"></i> <span data-i18n="navJoin">参与方式</span>
+        </a>
+        <a href="#about/contact" class="nav-item" data-page="about" data-section="contact">
+          <i class="fas fa-headset"></i> <span data-i18n="navContact">联系我们</span>
+        </a>
+      </nav>
+      <div class="header-actions">
+        <button class="a11y-toggle" id="a11yToggle" title="适配模式" aria-label="适配模式">
+          <i class="fas fa-universal-access"></i>
+        </button>
+        <a href="#" class="lang-toggle" id="langToggle" title="Switch Language">
+          <i class="fas fa-language"></i> <span>EN</span>
+        </a>
+        <button class="btn-login" id="btnLogin">
+          <i class="fas fa-sign-in-alt"></i> <span data-i18n="loginRegister">登录/注册</span>
+        </button>
+      </div>
+      <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== Auth Modal ========== -->
+    <div class="modal-overlay" id="authModal">
+    <div class="modal">
+      <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login" data-i18n="tabLogin">登录</button>
+        <button class="auth-tab" data-tab="register" data-i18n="tabRegister">注册</button>
+      </div>
+      <!-- Login (Phone + Code) -->
+      <form class="auth-form" id="loginForm">
+        <div class="form-group">
+          <label data-i18n="labelPhone">手机号</label>
+          <input type="tel" id="loginPhone" data-i18n-ph="placeholderPhone" placeholder="请输入手机号" required maxlength="11">
+        </div>
+        <div class="form-group">
+          <label data-i18n="labelCode">验证码</label>
+          <div style="display:flex;gap:8px">
+            <input type="text" id="loginCode" data-i18n-ph="placeholderCode" placeholder="请输入验证码" required maxlength="6" style="flex:1">
+            <button type="button" class="btn-secondary" id="btnSendCode" data-i18n="btnSendCode" style="white-space:nowrap;min-width:100px">获取验证码</button>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary" data-i18n="btnLogin">登录</button>
+      </form>
+      <!-- Register -->
+      <form class="auth-form hidden" id="registerForm">
+        <div class="form-group">
+          <label data-i18n="labelPhone">手机号</label>
+          <input type="tel" id="regPhone" data-i18n-ph="placeholderPhone" placeholder="请输入手机号" required maxlength="11">
+        </div>
+        <div class="form-group">
+          <label data-i18n="labelNickname">昵称</label>
+          <input type="text" id="regNickname" data-i18n-ph="placeholderNickname" placeholder="请输入昵称（选填）">
+        </div>
+        <div class="form-group">
+          <label data-i18n="labelCode">验证码</label>
+          <div style="display:flex;gap:8px">
+            <input type="text" id="regCode" data-i18n-ph="placeholderCode" placeholder="请输入验证码" required maxlength="6" style="flex:1">
+            <button type="button" class="btn-secondary" id="btnSendCodeReg" data-i18n="btnSendCode" style="white-space:nowrap;min-width:100px">获取验证码</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="labelGender">性别</label>
+          <select id="regGender">
+            <option value="male" data-i18n="male">男</option>
+            <option value="female" data-i18n="female">女</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label data-i18n="labelAgeGroup">年龄组</label>
+          <select id="regAgeGroup">
+            <option value="youth" data-i18n="ageTeen">10-17岁 少年组</option>
+            <option value="adult" selected data-i18n="ageAdult">18-59岁 成年组</option>
+            <option value="senior" data-i18n="ageSenior">60岁+ 长青组</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label data-i18n="labelCountry">国家/地区</label>
+          <select id="regCountry">
+            <option value="中国" selected>中国</option>
+            <option value="中国台湾">中国台湾</option>
+            <option value="中国香港">中国香港</option>
+            <option value="中国澳门">中国澳门</option>
+            <option value="美国">美国</option>
+            <option value="日本">日本</option>
+            <option value="韩国">韩国</option>
+            <option value="英国">英国</option>
+            <option value="德国">德国</option>
+            <option value="法国">法国</option>
+            <option value="意大利">意大利</option>
+            <option value="澳大利亚">澳大利亚</option>
+            <option value="加拿大">加拿大</option>
+            <option value="巴西">巴西</option>
+            <option value="印度">印度</option>
+            <option value="俄罗斯">俄罗斯</option>
+            <option value="新加坡">新加坡</option>
+            <option value="马来西亚">马来西亚</option>
+            <option value="泰国">泰国</option>
+            <option value="菲律宾">菲律宾</option>
+            <option value="越南">越南</option>
+            <option value="墨西哥">墨西哥</option>
+            <option value="阿根廷">阿根廷</option>
+            <option value="土耳其">土耳其</option>
+            <option value="沙特阿拉伯">沙特阿拉伯</option>
+            <option value="埃及">埃及</option>
+            <option value="南非">南非</option>
+            <option value="新西兰">新西兰</option>
+            <option value="阿联酋">阿联酋</option>
+            <option value="其他">其他</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label data-i18n="labelCity">城市</label>
+          <select id="regCity">
+            <option value="" data-i18n="selectCity">请选择城市</option>
+          </select>
+        </div>
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="agreeTerms">
+            <span data-i18n="agreeTerms">我已阅读并同意</span><span data-i18n="privacyLink" style="color:var(--primary);text-decoration:underline;cursor:pointer">《隐私政策与用户协议》</span>
+          </label>
+        </div>
+        <button type="submit" class="btn-primary" id="btnRegister" disabled data-i18n="btnRegister">注册</button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ========== Video Upload Modal ========== -->
+  <div class="modal-overlay" id="videoUploadModal" style="display:none">
+    <div class="modal modal-lg">
+      <button class="modal-close" id="videoUploadClose"><i class="fas fa-times"></i></button>
+      <h2 class="modal-title" data-i18n="videoUploadModalTitle">📤 上传摇跑视频</h2>
+      <p class="modal-desc" data-i18n="videoUploadModalDesc">上传你的摇跑视频，展示你的活力风采！视频≤1分钟，审核通过后自动上线。</p>
+
+      <form id="videoUploadForm" class="video-upload-form">
+        <!-- Drop Zone -->
+        <div class="video-dropzone" id="videoDropzone">
+          <div class="video-dropzone-content" id="videoDropzoneContent">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p data-i18n="videoDropzoneText">拖拽视频到此处，或点击选择文件</p>
+            <span class="video-dropzone-hint" data-i18n="videoDropzoneHint">支持 MP4/MOV/AVI，≤1分钟，≤25MB</span>
+          </div>
+          <div class="video-preview-container" id="videoPreviewContainer" style="display:none">
+            <video id="videoPreview" controls playsinline></video>
+            <button type="button" class="video-remove-btn" id="videoRemoveBtn">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+          <input type="file" id="videoFileInput" accept="video/mp4,video/quicktime,video/avi,video/webm" style="display:none">
+        </div>
+
+        <!-- Video Title -->
+        <div class="form-group">
+          <label data-i18n="videoLabelTitle">视频标题</label>
+          <input type="text" id="videoTitle" data-i18n-ph="videoPhTitle" placeholder="给你的视频起个名字（选填）" maxlength="50">
+        </div>
+
+        <!-- Video Description -->
+        <div class="form-group">
+          <label data-i18n="videoLabelDesc">视频描述</label>
+          <textarea id="videoDesc" data-i18n-ph="videoPhDesc" placeholder="描述一下你的摇跑视频（选填）" maxlength="200" rows="3"></textarea>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="video-progress" id="videoProgress" style="display:none">
+          <div class="video-progress-bar">
+            <div class="video-progress-fill" id="videoProgressFill"></div>
+          </div>
+          <span class="video-progress-text" id="videoProgressText">0%</span>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn-primary btn-primary-full" id="videoSubmitBtn" disabled>
+          <i class="fas fa-upload"></i>
+          <span data-i18n="videoSubmitBtn">提交审核</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========== Video Player Modal ========== -->
+  <div class="modal-overlay" id="videoPlayerModal" style="display:none">
+    <div class="modal modal-video">
+      <button class="modal-close" id="videoPlayerClose"><i class="fas fa-times"></i></button>
+      <div class="video-player-wrapper">
+        <video id="videoPlayer" controls playsinline></video>
+      </div>
+      <div class="video-player-info">
+        <div class="video-player-user">
+          <img loading="lazy" decoding="async" class="video-player-avatar" id="videoPlayerAvatar" src="" alt="">
+          <div class="video-player-meta">
+            <strong id="videoPlayerUsername"></strong>
+            <span id="videoPlayerTime"></span>
+          </div>
+        </div>
+        <p class="video-player-title" id="videoPlayerTitle"></p>
+        <p class="video-player-desc" id="videoPlayerDesc"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== User Videos Modal (click avatar) ========== -->
+  <div class="modal-overlay" id="userVideosModal" style="display:none">
+    <div class="modal modal-user-videos">
+      <button class="modal-close" id="userVideosClose"><i class="fas fa-times"></i></button>
+      <div class="user-videos-header">
+        <img loading="lazy" decoding="async" class="user-videos-avatar" id="userVideosAvatar" src="" alt="">
+        <div>
+          <h3 id="userVideosUsername"></h3>
+          <span class="user-videos-count" id="userVideosCount"></span>
+        </div>
+      </div>
+      <div class="user-videos-grid" id="userVideosGrid">
+        <!-- JS renders -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== Poster Modal ========== -->
+  <div class="modal-overlay" id="posterModal" style="display:none">
+    <div class="modal" style="max-width:420px;padding:20px">
+      <button class="modal-close" id="posterClose"><i class="fas fa-times"></i></button>
+      <h3 style="font-size:18px;margin:0 0 16px">生成分享海报</h3>
+      <canvas id="posterCanvas" width="1080" height="1080" style="width:100%;border-radius:8px;border:1px solid var(--border)"></canvas>
+      <div style="margin-top:12px">
+        <label style="font-size:14px;color:var(--text-secondary);display:block;margin-bottom:4px">自定义文案</label>
+        <input type="text" id="posterText" placeholder="快来和我一起摇跑吧！" maxlength="30" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-size:15px;box-sizing:border-box">
+      </div>
+      <div style="display:flex;gap:12px;margin-top:12px">
+        <button class="btn-primary" id="btnGenPoster" style="flex:1;min-height:44px"><i class="fas fa-image"></i> 生成海报</button>
+        <button class="btn-primary" id="btnSavePoster" style="flex:1;min-height:44px;background:var(--secondary)"><i class="fas fa-download"></i> 保存图片</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== Toast Container ========== -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ========== Main Content ========== -->
+  <main class="main">
+
+    <!-- ===== 首页 Page ===== -->
+    <section class="page active" id="page-home">
+      <!-- Hero Banner -->
+      <div class="lb-hero">
+        <div class="lb-hero-badge"><i class="fas fa-bolt"></i> RunOrb</div>
+        <h1 class="lb-hero-title" data-i18n="lbHeroTitle">智能机器人逐步普及，人类如何维持肢体活力？</h1>
+        <p class="lb-hero-slogan" data-i18n="lbHeroSlogan">⚡ 一分钟RunOrb摇跑 · 测活力 · 全球排名</p>
+        <div class="lb-hero-actions">
+          <a href="#" class="lb-quick-btn lb-quick-btn-primary" id="btnHomeRanking">
+            <i class="fas fa-trophy"></i>
+            <span data-i18n="ctaRanking">查看全球活力排名</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Feature Cards -->
+      <div style="max-width:900px;margin:0 auto;padding:0 20px 40px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px">
+          <div class="leaderboard-card" style="text-align:center;padding:30px 20px;cursor:pointer" onclick="document.querySelector('[data-page=about][data-section=intro]')?.click()">
+            <i class="fas fa-bolt" style="font-size:36px;color:var(--primary);margin-bottom:16px"></i>
+            <h3 data-i18n="feature1Title" style="margin-bottom:8px">活力指数检测</h3>
+            
+          </div>
+          <div class="leaderboard-card" style="text-align:center;padding:30px 20px;cursor:pointer" onclick="document.querySelector('[data-page=leaderboard]')?.click()">
+            <i class="fas fa-globe" style="font-size:36px;color:var(--secondary);margin-bottom:16px"></i>
+            <h3 data-i18n="feature2Title" style="margin-bottom:8px">全球实时排名</h3>
+            
+          </div>
+          <div class="leaderboard-card" style="text-align:center;padding:30px 20px;cursor:pointer" onclick="navigateTo('videos')">
+            <i class="fas fa-play-circle" style="font-size:36px;color:var(--danger);margin-bottom:16px"></i>
+            <h3 data-i18n="feature3Title" style="margin-bottom:8px">摇跑精彩瞬间</h3>
+            
+          </div>
+        </div>
+      </div>
+
+      <!-- Home Video Showcase - 3 autoplay videos -->
+      <div style="max-width:900px;margin:0 auto;padding:0 20px 40px">
+        <div id="homeVideosGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+          <!-- JS renders video cards -->
+        </div>
+      </div>
+
+      <!-- Android Download Modal -->
+      <div class="modal-overlay" id="androidModal" style="display:none">
+        <div class="modal" style="max-width:480px;padding:28px;text-align:center">
+          <button class="modal-close" onclick="document.getElementById('androidModal').style.display='none'" aria-label="关闭"><i class="fas fa-times"></i></button>
+          <i class="fab fa-android" style="font-size:56px;color:#3DDC84;display:block;margin-bottom:16px"></i>
+          <h3 style="margin:0 0 8px;font-size:20px">Android 下载</h3>
+          <p style="color:var(--text-secondary);margin-bottom:20px;font-size:14px">选择下载渠道，安装 RunOrb App</p>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <button onclick="startAPKDownload(1)" id="apkBtn1" style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:linear-gradient(135deg,#3DDC84,#2bb573);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;transition:opacity 0.2s;min-height:56px" aria-label="Android下载渠道1">
+              <i class="fab fa-android" style="font-size:24px"></i>
+              <div style="text-align:left;flex:1">
+                <div>下载渠道 (1)</div>
+                <div style="font-size:12px;opacity:0.85;font-weight:400">官方直链下载</div>
+              </div>
+              <i class="fas fa-download"></i>
+            </button>
+            <button onclick="startAPKDownload(2)" id="apkBtn2" style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:var(--primary);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;transition:opacity 0.2s;min-height:56px" aria-label="Android下载渠道R1">
+              <i class="fab fa-android" style="font-size:24px"></i>
+              <div style="text-align:left;flex:1">
+                <div>下载渠道 (R1)</div>
+                <div style="font-size:12px;opacity:0.85;font-weight:400">备用下载链接</div>
+              </div>
+              <i class="fas fa-download"></i>
+            </button>
+          </div>
+          <!-- Download Progress -->
+          <div id="apkProgress" style="display:none;margin-top:20px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:14px">
+              <span id="apkProgressLabel">正在下载...</span>
+              <span id="apkProgressPct">0%</span>
+            </div>
+            <div style="width:100%;height:12px;background:#e0e0e0;border-radius:6px;overflow:hidden">
+              <div id="apkProgressBar" style="width:0%;height:100%;background:linear-gradient(90deg,#3DDC84,#2bb573);border-radius:6px;transition:width 0.3s"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- iOS Download Modal -->
+      <div class="modal-overlay" id="iosModal" style="display:none">
+        <div class="modal" style="max-width:420px;padding:28px;text-align:center">
+          <button class="modal-close" onclick="document.getElementById('iosModal').style.display='none'" aria-label="关闭"><i class="fas fa-times"></i></button>
+          <div style="width:120px;height:120px;margin:0 auto 16px;background:linear-gradient(135deg,#007AFF,#0055d4);border-radius:24px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,122,255,0.3)">
+            <i class="fab fa-apple" style="font-size:64px;color:#fff"></i>
+          </div>
+          <h3 style="margin:0 0 8px;font-size:22px">App Store 下载</h3>
+          <p style="color:var(--text-secondary);margin-bottom:6px;font-size:15px">RunOrb — 摇跑活力指数</p>
+          <div style="display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:20px">
+            <i class="fas fa-star" style="color:#FFD700;font-size:14px"></i>
+            <i class="fas fa-star" style="color:#FFD700;font-size:14px"></i>
+            <i class="fas fa-star" style="color:#FFD700;font-size:14px"></i>
+            <i class="fas fa-star" style="color:#FFD700;font-size:14px"></i>
+            <i class="fas fa-star-half-alt" style="color:#FFD700;font-size:14px"></i>
+            <span style="font-size:13px;color:var(--text-secondary);margin-left:4px">4.5</span>
+          </div>
+          <a href="https://apps.apple.com/app/runorb/id6744368493" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:16px 32px;background:#000;color:#fff;border-radius:12px;text-decoration:none;font-size:17px;font-weight:600;min-height:52px;transition:opacity 0.2s" aria-label="前往App Store下载">
+            <i class="fab fa-apple" style="font-size:22px"></i>
+            <div style="text-align:left;line-height:1.2">
+              <div style="font-size:11px;font-weight:400;opacity:0.8">Download on the</div>
+              <div>App Store</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Mini Program Modal -->
+      <div class="modal-overlay" id="miniProgramModal" style="display:none">
+        <div class="modal" style="max-width:380px;padding:28px;text-align:center">
+          <button class="modal-close" onclick="document.getElementById('miniProgramModal').style.display='none'" aria-label="关闭"><i class="fas fa-times"></i></button>
+          <div style="width:100px;height:100px;margin:0 auto 16px;background:linear-gradient(135deg,#07C160,#06ad56);border-radius:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(7,193,96,0.3)">
+            <i class="fab fa-weixin" style="font-size:52px;color:#fff"></i>
+          </div>
+          <h3 style="margin:0 0 6px;font-size:22px">我爱摇跑</h3>
+          <p style="color:var(--text-secondary);margin-bottom:20px;font-size:14px">微信小程序 · 扫码或搜索即可使用</p>
+          <div style="background:#f5f5f5;border-radius:16px;padding:24px;margin-bottom:16px">
+            <div style="width:180px;height:180px;margin:0 auto;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;border:2px dashed #ddd">
+              <i class="fas fa-qrcode" style="font-size:64px;color:#07C160"></i>
+              <span style="font-size:13px;color:var(--text-secondary)">小程序码</span>
+            </div>
+          </div>
+          <p style="font-size:14px;color:var(--text-secondary)">
+            <i class="fab fa-weixin" style="color:#07C160"></i>
+            打开微信 → 搜索 <strong>"我爱摇跑"</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===== 排行榜 Page ===== -->
+    <section class="page" id="page-leaderboard">
+      <!-- Hero Banner -->
+      <div class="lb-hero">
+        <div class="lb-hero-badge"><i class="fas fa-bolt"></i> RunOrb</div>
+        <h1 class="lb-hero-title" data-i18n="lbHeroTitle">智能机器人逐步普及，人类如何维持肢体活力？</h1>
+        <p class="lb-hero-slogan" data-i18n="lbHeroSlogan">⚡ 一分钟RunOrb摇跑 · 测活力 · 全球排名</p>
+        <p class="lb-hero-subtitle" data-i18n="lbHeroSubtitle">🛡️ 安全简单 · 👥 全民适宜 · 🔬 科学健康</p>
+      </div>
+
+      <!-- Group Selector -->
+      <div class="group-selector">
+        <label><i class="fas fa-users"></i> <span data-i18n="groupLabel">组别：</span></label>
+        <select id="groupSelect">
+          <option value="male-youth" data-i18n="groupMaleTeen">男性 10-17岁 少年组</option>
+          <option value="male-adult" selected data-i18n="groupMaleAdult">男性 18-59岁 成年组</option>
+          <option value="male-senior" data-i18n="groupMaleSenior">男性 60岁+ 长青组</option>
+          <option value="female-youth" data-i18n="groupFemaleTeen">女性 10-17岁 少年组</option>
+          <option value="female-adult" data-i18n="groupFemaleAdult">女性 18-59岁 成年组</option>
+          <option value="female-senior" data-i18n="groupFemaleSenior">女性 60岁+ 长青组</option>
+        </select>
+      </div>
+
+      <!-- Region tabs -->
+      <div class="tabs" id="regionTabs">
+        <button class="tab-btn active" data-tab="global" data-i18n="regionGlobal">全球排名</button>
+        <button class="tab-btn" data-tab="china" data-i18n="regionChina">中国排名</button>
+        <button class="tab-btn" data-tab="city" data-i18n="regionCity">城市排名</button>
+      </div>
+
+      <!-- My Rank Banner -->
+      <div id="myRankBanner" class="my-rank-banner" style="display:none"></div>
+
+      <!-- Table -->
+      <div class="leaderboard-card">
+        <!-- Trust Bar -->
+        <div class="trust-bar">
+          <span><i class="fas fa-sync-alt" style="color:var(--success)"></i> <span data-i18n="trustUpdate">数据每日更新</span></span>
+          <span class="trust-sep">|</span>
+          <span><i class="fas fa-balance-scale" style="color:var(--primary)"></i> <span data-i18n="trustFair">公平公正</span></span>
+          <span class="trust-sep">|</span>
+          <span><i class="fas fa-shield-alt" style="color:var(--secondary-light)"></i> <span data-i18n="trustPrivacy">保护隐私</span></span>
+          <span class="trust-sep">|</span>
+          <span><i class="fas fa-heart" style="color:var(--danger)"></i> <span data-i18n="trustHealth">仅用于健康运动排名</span></span>
+        </div>
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th style="width:60px" data-i18n="thRank">排名</th>
+              <th data-i18n="thPlayer">用户</th>
+              <th data-i18n="thEnergy">活力指数</th>
+              <th class="hide-mobile" style="width:90px" data-i18n="thRpm">最高转速</th>
+              <th class="hide-mobile" style="width:100px" data-i18n="thDist">1分钟距离</th>
+              <th class="hide-mobile" style="width:100px" data-i18n="thRegion">地区</th>
+              <th class="hide-mobile" style="width:80px" data-i18n="thTime">更新时间</th>
+              <th style="width:110px" data-i18n="thAction">操作</th>
+            </tr>
+          </thead>
+          <tbody id="personalTableBody">
+              <!-- JS renders -->
+          </tbody>
+        </table>
+        <!-- Load More -->
+        <div class="load-more-container" id="loadMoreContainer">
+          <button class="load-more-btn" id="loadMoreBtn">
+            <span class="btn-text"><i class="fas fa-chevron-down"></i> 加载更多</span>
+            <span class="spinner"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Share & Data Info Bar -->
+      <div class="share-data-bar">
+        <div class="share-buttons">
+          <span data-i18n="shareLabel">分享榜单：</span>
+          <button class="share-btn" id="shareWeChat" title="微信"><i class="fab fa-weixin"></i></button>
+          <button class="share-btn" id="shareTikTok" title="TikTok"><i class="fab fa-tiktok"></i></button>
+          <button class="share-btn" id="shareYouTube" title="YouTube"><i class="fab fa-youtube"></i></button>
+          <button class="share-btn" id="shareCopy" title="复制链接"><i class="fas fa-link"></i></button>
+        </div>
+        <div class="data-update-note">
+          <i class="fas fa-sync-alt"></i>
+          <span data-i18n="dataUpdateNote">数据每日更新 · 最后更新时间：<span id="lastUpdateTime">--</span></span>
+        </div>
+      </div>
+    </div>
+
+      <!-- Get RunOrb CTA Banner -->
+      <div class="get-runorb-banner" id="getRunorbBanner">
+        <div class="get-runorb-icon">🌀</div>
+        <div class="get-runorb-text">
+          <strong data-i18n="getRunorbTitle">还没有摇跑球？</strong>
+          <span data-i18n="getRunorbDesc">获取摇跑球，1分钟测试你的活力指数，登上全球排行榜！</span>
+        </div>
+        <a href="get-runorb.html" class="get-runorb-btn" data-i18n="getRunorbBtn" style="display:inline-block;padding:8px 16px;background:var(--primary);color:#fff;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;box-shadow:0 4px 16px rgba(255,107,53,0.3);transition:transform 0.2s,box-shadow 0.2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(255,107,53,0.4)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(255,107,53,0.3)'">立即获取 →</a>
+      </div>
+
+      <!-- 购买渠道 / Purchase Channels -->
+      <div style="max-width:900px;margin:0 auto;padding:0 20px 32px">
+        <div class="leaderboard-card" style="padding:24px;background:linear-gradient(135deg,rgba(255,107,53,0.06),rgba(0,78,137,0.06))">
+          <h3 style="margin:0 0 20px;text-align:center;font-size:17px"><i class="fas fa-shopping-cart" style="color:var(--primary);margin-right:8px"></i>购买摇跑球 / Buy RunOrb</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <!-- 国内：微信小店 -->
+            <a href="javascript:void(0)" href="#微信小店://摇跑俱乐部/GaOdhEAiRk8AzAa" style="display:flex;flex-direction:column;align-items:center;padding:24px 16px;background:linear-gradient(135deg,#07C160,#06AD56);color:#fff;border-radius:12px;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(7,193,96,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+              <i class="fab fa-weixin" style="font-size:36px;margin-bottom:12px"></i>
+              <div style="font-size:16px;font-weight:700;margin-bottom:4px">国内购买</div>
+              <div style="font-size:13px;opacity:0.9">微信小店</div>
+              <div style="font-size:12px;opacity:0.75;margin-top:4px">微信搜索「我爱摇跑」</div>
+            </a>
+            <!-- 国外：阿里巴巴 -->
+            <a href="https://www.alibaba.com/product-detail/product_1601585685969.html" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;padding:24px 16px;background:linear-gradient(135deg,#FF6A00,#EE4B2B);color:#fff;border-radius:12px;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(255,106,0,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+              <i class="fas fa-globe" style="font-size:36px;margin-bottom:12px"></i>
+              <div style="font-size:16px;font-weight:700;margin-bottom:4px">海外购买</div>
+              <div style="font-size:13px;opacity:0.9">Alibaba 国际站</div>
+              <div style="font-size:12px;opacity:0.75;margin-top:4px">全球配送</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 参与方式 / How to Join -->
+      <div style="max-width:900px;margin:0 auto;padding:0 20px 40px">
+        <div class="leaderboard-card" style="padding:28px;background:linear-gradient(135deg,rgba(255,107,53,0.06),rgba(0,78,137,0.06))">
+          <h3 style="margin-bottom:16px;text-align:center"><i class="fas fa-hand-point-up" style="color:var(--primary);margin-right:8px"></i>参与方式</h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px">
+            <div style="text-align:center;padding:20px">
+              <div style="width:64px;height:64px;margin:0 auto 12px;background:linear-gradient(135deg,var(--primary),#1565C0);border-radius:16px;display:flex;align-items:center;justify-content:center">
+                <i class="fas fa-mobile-alt" style="font-size:28px;color:#fff"></i>
+              </div>
+              <h4 style="margin-bottom:6px;font-size:16px">1. 下载 App</h4>
+              <p style="font-size:13px;color:var(--text-secondary);line-height:1.5">下载 RunOrb App（iOS / Android）或微信小程序"我爱摇跑"</p>
+            </div>
+            <div style="text-align:center;padding:20px">
+              <div style="width:64px;height:64px;margin:0 auto 12px;background:linear-gradient(135deg,#FF6B35,#FF8F00);border-radius:16px;display:flex;align-items:center;justify-content:center">
+                <i class="fas fa-bolt" style="font-size:28px;color:#fff"></i>
+              </div>
+              <h4 style="margin-bottom:6px;font-size:16px">2. 摇跑测试</h4>
+              <p style="font-size:13px;color:var(--text-secondary);line-height:1.5">连接摇跑球，摇动1分钟，自动记录活力指数</p>
+            </div>
+            <div style="text-align:center;padding:20px">
+              <div style="width:64px;height:64px;margin:0 auto 12px;background:linear-gradient(135deg,#4CAF50,#2E7D32);border-radius:16px;display:flex;align-items:center;justify-content:center">
+                <i class="fas fa-trophy" style="font-size:28px;color:#fff"></i>
+              </div>
+              <h4 style="margin-bottom:6px;font-size:16px">3. 查看排名</h4>
+              <p style="font-size:13px;color:var(--text-secondary);line-height:1.5">成绩自动上传，实时查看全球活力指数排行榜</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 摇跑视频 Page ===== -->
+    <section class="page" id="page-videos">
+      <div class="videos-hero">
+        <div class="videos-hero-badge"><i class="fas fa-video"></i> RunOrb</div>
+        <h1 class="videos-hero-title" data-i18n="videosHeroTitle">全球摇跑玩家精彩瞬间</h1>
+        <p class="videos-hero-slogan" data-i18n="videosHeroSlogan">🎬 分享你的摇跑视频，展示你的活力风采</p>
+      </div>
+
+      <!-- Upload CTA (shown when logged in) -->
+      <div class="videos-upload-cta" id="videosUploadCta" style="display:none">
+        <div class="videos-upload-cta-inner">
+          <div class="videos-upload-cta-icon">📤</div>
+          <div class="videos-upload-cta-text">
+            <strong data-i18n="videosUploadTitle">分享你的摇跑视频</strong>
+            <span data-i18n="videosUploadDesc">上传≤1分钟的摇跑视频，展示你的活力！审核通过后自动上线。</span>
+          </div>
+          <button class="videos-upload-btn" id="btnUploadVideo">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <span data-i18n="videosUploadBtn">上传视频</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Login prompt (shown when not logged in) -->
+      <div class="videos-login-prompt" id="videosLoginPrompt">
+        <div class="videos-login-prompt-inner">
+          <i class="fas fa-lock"></i>
+          <p data-i18n="videosLoginPrompt">登录后即可上传和分享你的摇跑视频</p>
+          <button class="btn-login" id="btnLoginFromVideos">
+            <i class="fas fa-sign-in-alt"></i>
+            <span data-i18n="loginRegister">登录/注册</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Video Grid -->
+      <div class="videos-grid" id="videosGrid">
+        <!-- JS renders video cards -->
+      </div>
+
+      <!-- Empty State -->
+      <div class="videos-empty" id="videosEmpty" style="display:none">
+        <i class="fas fa-film"></i>
+        <p data-i18n="videosEmpty">还没有视频，快来上传第一个吧！</p>
+      </div>
+
+      <!-- Load More -->
+      <div class="videos-load-more" id="videosLoadMore" style="display:none">
+        <button class="videos-load-more-btn" id="btnLoadMoreVideos">
+          <i class="fas fa-chevron-down"></i>
+          <span data-i18n="videosLoadMore">加载更多</span>
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ===== 新闻 Page ===== -->
+    <section class="page" id="page-news">
+      <div class="videos-hero" style="background:linear-gradient(135deg,#ff6b35 0%,#004e89 100%)">
+        <div class="videos-hero-badge"><i class="fas fa-newspaper"></i> RunOrb</div>
+        <h1 class="videos-hero-title" data-i18n="newsTitle">活动新闻</h1>
+        <p class="videos-hero-slogan" data-i18n="newsSubtitle">📰 摇跑运动最新动态、活动资讯、科普知识</p>
+      </div>
+
+      <div class="tabs" id="newsTabs" style="max-width:900px;margin:0 auto">
+        <button class="tab-btn active" data-tab="all" data-i18n="tabAll">全部</button>
+        <button class="tab-btn" data-tab="event" data-i18n="tabEvent">活动资讯</button>
+        <button class="tab-btn" data-tab="announcement" data-i18n="tabAnnouncement">平台公告</button>
+        <button class="tab-btn" data-tab="sports" data-i18n="tabSports">运动科普</button>
+        <button class="tab-btn" data-tab="ranking" data-i18n="tabRanking">排名热点</button>
+      </div>
+
+      <div class="news-grid" id="newsGrid">
+        <!-- JS renders -->
+      </div>
+    </section>
+
+    <!-- ===== 公益大赛 Page ===== -->
+    <section class="page" id="page-event">
+        <div class="section-title" style="margin-bottom:8px">
+          <i class="fas fa-trophy" style="color:var(--gold)"></i>
+          <span data-i18n="eventTitle">第一届摇跑公益大赛</span>
+        </div>
+        <p style="color:var(--text-secondary);margin-bottom:32px;font-size:15px" data-i18n="eventSubtitle">The 1st Gyroball Charity Championship — 用一分钟证明你的活力，为全球儿童体育教育贡献力量</p>
+
+        <!-- Product Video Showcase -->
+        <div style="margin-bottom:32px">
+          <div style="position:relative;width:100%;max-width:720px;margin:0 auto;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.3);border:1px solid rgba(255,107,53,0.2)">
+            <video id="heroVideo" controls preload="none" poster="" playsinline style="width:100%;display:block;background:#1e2a3a">
+              <source src="/videos/charity-event.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <p style="text-align:center;color:var(--text-secondary);font-size:13px;margin-top:12px" data-i18n="eventHighlights">第一届摇跑公益大赛 — 活动精彩瞬间</p>
+        </div>
+
+        <!-- Hero Banner -->
+        <div class="event-hero">
+          <div class="event-hero-badge">🏆 CHARITY EVENT</div>
+          <h2 class="event-hero-title" data-i18n="eventTitle">第一届摇跑公益大赛</h2>
+          <p class="event-hero-subtitle">The 1st Gyroball Charity Championship</p>
+          <div class="event-hero-stats">
+            <div class="event-stat">
+              <div class="event-stat-value">🌍</div>
+              <div class="event-stat-label" data-i18n="eventGlobalOpen">全球开放</div>
+            </div>
+            <div class="event-stat">
+              <div class="event-stat-value">7</div>
+              <div class="event-stat-label" data-i18n="eventCategories">竞赛组别</div>
+            </div>
+            <div class="event-stat">
+              <div class="event-stat-value">60s</div>
+              <div class="event-stat-label" data-i18n="eventIndividual">个人挑战</div>
+            </div>
+            <div class="event-stat">
+              <div class="event-stat-value">3v3</div>
+              <div class="event-stat-label" data-i18n="eventTeamPK">团队PK</div>
+            </div>
+            <div class="event-stat">
+              <div class="event-stat-value">❤️</div>
+              <div class="event-stat-label" data-i18n="eventCharity">公益捐赠</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event Info Cards -->
+        <div class="event-info-grid">
+          <div class="event-info-card">
+            <div class="event-info-icon">📋</div>
+            <h3 data-i18n="eventRules">赛事规则</h3>
+            <ul>
+              <li><span data-i18n="evtIndRule"><strong>个人赛</strong>：使用摇跑球（Gyroball）全力摇动<strong>1分钟</strong></span></li>
+              <li><span data-i18n="evtRecordRule">记录<strong>最高转速（RPM）</strong>和<strong>一分钟距离（km）</strong></span></li>
+              <li><span data-i18n="evtFormula">活力指数 = 最高转速 × 一分钟距离</span></li>
+              <li><span data-i18n="evtUploadRule">通过 RunOrb App 记录数据，截屏上传至排行榜</span></li>
+              <li><span data-i18n="evtApproveRule">后台审核确认后计入正式排名</span></li>
+            </ul>
+            <ul style="margin-top:12px;padding-top:12px;border-top:1px dashed rgba(255,255,255,0.2)">
+              <li><span data-i18n="evtTeamRule"><strong>团队赛</strong>：采用 RunOrb App 进行 3人组队，3人对3人同时进行PK 3分钟</span></li>
+              <li><span data-i18n="evtTeamDetail">3名队员分别与对方3名队员进行1v1活力指数PK，每场3分钟</span></li>
+              <li><span data-i18n="evtTeamMatch">通过 RunOrb App 在线匹配，实时记录并对比成绩</span></li>
+              <li><span data-i18n="evtTeamWin">以团队总活力指数排名，总分最高的团队获胜</span></li>
+              <li data-i18n="evt_决赛全程线上直播全球同步观赛">决赛全程线上直播，全球同步观赛</li>
+            </ul>
+          </div>
+          <div class="event-info-card">
+            <div class="event-info-icon">👥</div>
+            <h3 data-i18n="evtCategories2">参赛组别</h3>
+            <p style="margin-bottom:8px;opacity:0.8;font-size:0.9em" data-i18n="evtInd6Full">🏃 个人赛（6组）</p>
+            <ul>
+              <li data-i18n="evt_男性岁少年组">🟦 男性 10-17岁 少年组</li>
+              <li data-i18n="evt_男性岁成年组">🟦 男性 18-59岁 成年组</li>
+              <li data-i18n="evt_男性岁长青组">🟦 男性 60岁+ 长青组</li>
+              <li data-i18n="evt_女性岁少年组">🟩 女性 10-17岁 少年组</li>
+              <li data-i18n="evt_女性岁成年组">🟩 女性 18-59岁 成年组</li>
+              <li data-i18n="evt_女性岁长青组">🟩 女性 60岁+ 长青组</li>
+            </ul>
+            <p style="margin:12px 0 8px;opacity:0.8;font-size:0.9em" data-i18n="evtTeam1Full">🏆 团队赛（1组）</p>
+            <ul>
+              <li data-i18n="evt_团队赛采用">🟧 团队PK赛：采用 RunOrb App 进行 3人组队，3人对3人同时进行PK3分钟。</li>
+            </ul>
+          </div>
+          <div class="event-info-card">
+            <div class="event-info-icon">🎁</div>
+            <h3 data-i18n="eventPrizes">奖项设置</h3>
+            <p style="margin-bottom:8px;opacity:0.8;font-size:0.9em" data-i18n="evtIndPrize">🏃 个人赛</p>
+            <ul>
+              <li data-i18n="evt_各组别冠军冠军奖杯证书">🥇 各组别冠军：冠军奖杯 + 证书 + 奖金</li>
+              <li data-i18n="evt_各组别亚军亚军奖牌证书">🥈 各组别亚军：亚军奖牌 + 证书</li>
+              <li data-i18n="evt_各组别季军季军奖牌证书">🥉 各组别季军：季军奖牌 + 证书</li>
+              <li data-i18n="evt_全球活力之星最高活力指数">🏅 全球活力之星（最高活力指数）</li>
+              <li data-i18n="evt_最佳进步奖">🏅 最佳进步奖</li>
+            </ul>
+            <p style="margin:12px 0 8px;opacity:0.8;font-size:0.9em" data-i18n="evtTeamPrize">🏆 团队赛</p>
+            <ul>
+              <li data-i18n="evt_团队冠军冠军奖杯证书">🥇 团队冠军：冠军奖杯 + 证书 + 奖金</li>
+              <li data-i18n="evt_团队亚军亚军奖牌证书">🥈 团队亚军：亚军奖牌 + 证书</li>
+              <li data-i18n="evt_团队季军季军奖牌证书">🥉 团队季军：季军奖牌 + 证书</li>
+              <li data-i18n="evt_最佳团队协作奖">🏅 最佳团队协作奖</li>
+            </ul>
+            <p style="margin:12px 0 8px;opacity:0.8;font-size:0.9em">❤️ 公益</p>
+            <ul>
+              <li data-i18n="evt_公益贡献奖报名费捐赠">🏅 公益贡献奖（报名费捐赠）</li>
+            </ul>
+          </div>
+          <div class="event-info-card">
+            <div class="event-info-icon">❤️</div>
+            <h3 data-i18n="evtCharityMission">公益使命</h3>
+            <ul>
+              <li data-i18n="evtCharityFeeAll">所有报名费在扣除运营成本后<strong>全部捐赠</strong></li>
+              <li data-i18n="evt_受益方公益基金待定">受益方：公益基金（待定）</li>
+              <li data-i18n="evt_帮助欠发达地区儿童获得运动机会">帮助欠发达地区儿童获得运动机会</li>
+              <li data-i18n="evt_推动运动无障碍理念">推动"运动无障碍"理念</li>
+              <li data-i18n="evt_摇跑运动对残疾人极其友好">摇跑运动对残疾人极其友好</li>
+              <li data-i18n="evt_用运动连接世界用活力传递爱心">用运动连接世界，用活力传递爱心</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="event-section">
+          <h3 class="event-section-title"><i class="fas fa-clock"></i data-i18n="evtSchedule"> 赛事日程</h3>
+          <div class="event-timeline">
+            <div class="event-timeline-item">
+              <div class="event-timeline-dot" style="background:var(--primary)"></div>
+              <div class="event-timeline-content">
+                <div class="event-timeline-date" data-i18n="evt_年月">2026年4-6月</div>
+                <div class="event-timeline-title" data-i18n="evt_赛事启动全球招募">赛事启动 · 全球招募</div>
+                <div class="event-timeline-desc" data-i18n="evt_官方网站上线面向全球开放报名招募冠名赞助">官方网站上线，面向全球开放报名，招募冠名赞助商和团队赞助商</div>
+              </div>
+            </div>
+            <div class="event-timeline-item">
+              <div class="event-timeline-dot" style="background:var(--secondary)"></div>
+              <div class="event-timeline-content">
+                <div class="event-timeline-date" data-i18n="evt_年月">2026年7-9月</div>
+                <div class="event-timeline-title" data-i18n="evt_训练期热身挑战">训练期 · 热身挑战</div>
+                <div class="event-timeline-desc" data-i18n="evt_选手在排行榜上提交训练成绩每周公布各组别">选手在排行榜上提交训练成绩，每周公布各组别排名，线上交流训练心得</div>
+              </div>
+            </div>
+            <div class="event-timeline-item">
+              <div class="event-timeline-dot" style="background:var(--accent)"></div>
+              <div class="event-timeline-content">
+                <div class="event-timeline-date" data-i18n="evt_年月">2026年10-11月</div>
+                <div class="event-timeline-title" data-i18n="evt_报名冲刺预热推广">报名冲刺 · 预热推广</div>
+                <div class="event-timeline-desc" data-i18n="evt_报名截止选手提交预赛成绩全球宣传推广">报名截止，选手提交预赛成绩，全球宣传推广，直播平台对接</div>
+              </div>
+            </div>
+            <div class="event-timeline-item">
+              <div class="event-timeline-dot" style="background:var(--gold)"></div>
+              <div class="event-timeline-content">
+                <div class="event-timeline-date" data-i18n="evt_年月最后一周">2026年12月最后一周</div>
+                <div class="event-timeline-title" data-i18n="evt_线上决赛颁奖典礼">线上决赛 · 颁奖典礼</div>
+                <div class="event-timeline-desc" data-i18n="evt_线上直播决赛微信视频号抖音">线上直播决赛（微信视频号/抖音/TikTok/YouTube 多平台同步），全球同步观赛，专家点评，线上颁奖典礼，公益捐赠仪式</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sponsor Section -->
+        <div class="event-section">
+          <h3 class="event-section-title"><i class="fas fa-handshake"></i data-i18n="evtSponsor"> 赞助商招募</h3>
+          <div class="event-sponsor-grid">
+            <div class="event-sponsor-card">
+              <div class="event-sponsor-badge" style="background:linear-gradient(135deg,#FFD700,#FFA500)" data-i18n="evtTitleSponsor">冠名赞助</div>
+              <h4 data-i18n="evtNamingRights">赛事冠名权</h4>
+              <p data-i18n="evtNamingDesc">品牌名称将出现在赛事全称中，获得最高级别品牌曝光</p>
+              <ul>
+                <li data-i18n="evt_赛事冠名权如杯第一届摇跑公益大赛">赛事冠名权（如"XX杯第一届摇跑公益大赛"）</li>
+                <li data-i18n="evt_官网宣传物料品牌展示">官网、App、宣传物料品牌展示</li>
+                <li data-i18n="evt_颁奖典礼致辞权">颁奖典礼致辞权</li>
+                <li data-i18n="evt_全球媒体曝光">全球媒体曝光</li>
+              </ul>
+            </div>
+            <div class="event-sponsor-card">
+              <div class="event-sponsor-badge" style="background:linear-gradient(135deg,#C0C0C0,#808080)" data-i18n="evtTeamSponsor">团队赞助</div>
+              <h4 data-i18n="evtBrandTeam">冠名参赛团队</h4>
+              <p data-i18n="evtBrandTeamDesc">以品牌名义组建参赛团队，展示品牌用户的活力风采</p>
+              <ul>
+                <li data-i18n="evt_品牌冠名参赛团队">品牌冠名参赛团队</li>
+                <li data-i18n="evt_团队专属排行榜">团队专属排行榜</li>
+                <li data-i18n="evt_品牌活力指数排名">品牌活力指数排名</li>
+                <li data-i18n="evt_社交媒体联合推广">社交媒体联合推广</li>
+              </ul>
+            </div>
+            <div class="event-sponsor-card">
+              <div class="event-sponsor-badge" style="background:linear-gradient(135deg,#CD7F32,#8B4513)" data-i18n="evtCharitySponsor">公益赞助</div>
+              <h4 data-i18n="evtCharityPartner">公益合作伙伴</h4>
+              <p data-i18n="evtCharityPartnerDesc">以公益合作伙伴身份参与，共同推动全球儿童体育教育</p>
+              <ul>
+                <li data-i18n="evt_公益合作伙伴认证">公益合作伙伴认证</li>
+                <li data-i18n="evt_捐赠资金定向使用报告">捐赠资金定向使用报告</li>
+                <li data-i18n="evt_公益项目联合执行">公益项目联合执行</li>
+                <li data-i18n="evt_品牌社会责任形象提升">品牌社会责任形象提升</li>
+              </ul>
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:32px">
+            <a href="mailto:RunOrbclub@gmail.com" class="event-cta-btn">
+              <i class="fas fa-envelope"></i data-i18n="evtContactSponsor"> 联系我们洽谈赞助合作
+            </a>
+          </div>
+        </div>
+
+        <!-- How to participate -->
+        <div class="event-section" id="section-event-join">
+          <h3 class="event-section-title"><i class="fas fa-play-circle"></i data-i18n="howToTitle"> 如何参赛</h3>
+
+          <!-- Tutorial Videos Grid -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:28px">
+            <div style="border-radius:12px;overflow:hidden;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08)">
+              <video controls preload="none" playsinline style="width:100%;display:block;background:#1e2a3a">
+                <source src="/videos/tutorial-start.mp4" type="video/mp4">
+              </video>
+              <div style="padding:12px 14px">
+                <h4 style="margin:0;font-size:14px" data-i18n="tutStep1Title">🎬 摇跑球操作第一步</h4>
+                <p style="margin:4px 0 0;font-size:12px;color:var(--text-secondary)">RunOrb: First Steps</p>
+              </div>
+            </div>
+            <div style="border-radius:12px;overflow:hidden;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08)">
+              <video controls preload="none" playsinline style="width:100%;display:block;background:#1e2a3a">
+                <source src="/videos/tutorial-technique.mp4" type="video/mp4">
+              </video>
+              <div style="padding:12px 14px">
+                <h4 style="margin:0;font-size:14px" data-i18n="tutStep2Title">🎬 摇跑球使用注意事项</h4>
+                <p style="margin:4px 0 0;font-size:12px;color:var(--text-secondary)">Safety & Precautions</p>
+              </div>
+            </div>
+            <div style="border-radius:12px;overflow:hidden;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08)">
+              <video controls preload="none" playsinline style="width:100%;display:block;background:#1e2a3a">
+                <source src="/videos/tutorial-app.mp4" type="video/mp4">
+              </video>
+              <div style="padding:12px 14px">
+                <h4 style="margin:0;font-size:14px" data-i18n="tutStep3Title">🎬 一分钟活力指数检测</h4>
+                <p style="margin:4px 0 0;font-size:12px;color:var(--text-secondary)">1-Min Energy Index Test</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="event-steps">
+            <div class="event-step">
+              <div class="event-step-num">1</div>
+              <div class="event-step-content">
+                <h4 data-i18n="tutDownloadApp">下载 RunOrb App</h4>
+                <p data-i18n="tutDownloadAppDesc">下载安装 RunOrb App，注册账号</p>
+              </div>
+            </div>
+            <div class="event-step">
+              <div class="event-step-num">2</div>
+              <div class="event-step-content">
+                <h4 data-i18n="tutStartTraining">开始训练</h4>
+                <p data-i18n="tutStartTrainingDesc">使用摇跑球进行1分钟全力摇动，App自动记录数据</p>
+              </div>
+            </div>
+            <div class="event-step">
+              <div class="event-step-num">3</div>
+              <div class="event-step-content">
+                <h4 data-i18n="tutUploadScore">上传成绩</h4>
+                <p data-i18n="tutUploadScoreDesc">在排行榜网站截屏上传或手动输入成绩，等待审核</p>
+              </div>
+            </div>
+            <div class="event-step">
+              <div class="event-step-num">4</div>
+              <div class="event-step-content">
+                <h4 data-i18n="tutRankUp">冲击排名</h4>
+                <p data-i18n="tutRankUpDesc">审核通过后成绩计入排行榜，冲击全球排名！</p>
+              </div>
+            </div>
+            <div class="event-step">
+              <div class="event-step-num">5</div>
+              <div class="event-step-content">
+                <h4 data-i18n="tutRegister">正式报名</h4>
+                <p data-i18n="tutRegisterDesc">在官网完成报名缴费，获取参赛资格</p>
+                <p style="margin-top:8px;font-size:0.85em;opacity:0.9">
+                  <span data-i18n="tutIndividualFee">💰 个人赛报名费：</span><strong>$30 USD</strong><span data-i18n="tutIndividualFeeNote">/人（赠送1颗数字摇跑球 + 1颗腕力球）</span><br>
+                  <span data-i18n="tutTeamFee">💰 团队赛报名费：</span><strong>$90 USD</strong><span data-i18n="tutTeamFeeNote">/队（3人，赠送3颗数字摇跑球 + 3颗腕力球）</span><br>
+                  <span data-i18n="tutCharityNote">❤️ 所有报名费在扣除运营成本后全部捐赠给公益基金</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+            <a href="https://apps.apple.com/cn/app/runorb/id1559861575" target="_blank" rel="noopener" class="event-cta-btn" style="background:var(--primary)">
+              <i class="fab fa-apple"></i> iOS App Store
+            </a>
+            <a href="https://api.runorb.us/app/V1.2.2.13.apk" target="_blank" class="event-cta-btn" style="background:var(--primary);border:1px solid var(--primary)">
+              <i class="fab fa-android"></i> <span data-i18n="tutAndroid">Android 下载</span> (1)
+            </a>
+            <a href="https://api.runorb.us/app/V1.2.2.13.apk" target="_blank" class="event-cta-btn" style="background:var(--primary);border:1px solid var(--primary)">
+              <i class="fab fa-android"></i> <span data-i18n="tutAndroid">Android 下载</span> (R1)
+            </a>
+          </div>
+        </div>
+    </section>
+
+    <!-- ===== 关于我们 Page ===== -->
+    <section class="page" id="page-about">
+      <div class="about-hero">
+        <h2 data-i18n="aboutHeroTitle">智能机器人逐步普及，人类如何维持肢体活力？</h2>
+        <p data-i18n="aboutHeroDesc">RunOrb（摇跑）是中国原创、拥有自主知识产权的创新健康运动。面对智能机器人逐步普及带来的肢体活动减少问题，RunOrb以1分钟快速测试为核心，通过专属设备与手机连接，精准检测身体活力指标。适用于儿童、成人、长者及康复人群，是高效的上肢健康运动，轻松解决长期久坐不动、肢体活动不足的困扰。</p>
+        <a href="#" class="lb-quick-btn lb-quick-btn-primary" id="btnRegisterCTA" style="display:inline-flex;margin-top:16px">
+          <i class="fas fa-rocket"></i>
+          <span data-i18n="ctaRegister">立即注册 · 开启1分钟活力测试，抢占全球活力排名！</span>
+        </a>
+      </div>
+
+      <!-- About Sub-Tabs -->
+      <div class="tabs" id="aboutTabs" style="max-width:900px;margin:0 auto 24px;display:flex;gap:0;flex-wrap:wrap">
+        <button class="tab" data-about-tab="join"><i class="fas fa-hand-point-up"></i> <span data-i18n="navJoin">参与方式</span></button>
+        <button class="tab active" data-about-tab="intro"><i class="fas fa-info-circle"></i> <span data-i18n="navIntro">摇跑介绍</span></button>
+        <button class="tab" data-about-tab="guide"><i class="fas fa-book-open"></i> <span>使用指南</span></button>
+        <button class="tab" data-about-tab="reviews"><i class="fas fa-star"></i> <span>用户评价</span></button>
+        <button class="tab" data-about-tab="privacy"><i class="fas fa-file-contract"></i> <span data-i18n="aboutTerms">服务条款</span></button>
+        <button class="tab" data-about-tab="contact"><i class="fas fa-headset"></i> <span data-i18n="navContact">联系我们</span></button>
+      </div>
+
+      <!-- App Download / 参与方式 -->
+      <div class="about-section about-tab-content" id="section-join" data-tab="join" style="display:none;background:linear-gradient(135deg,rgba(255,107,53,0.1),rgba(255,107,53,0.02));border-radius:16px;border:1px solid rgba(255,107,53,0.2);margin-bottom:24px">
+        <div class="about-section-title"><i class="fas fa-shopping-cart"></i> 购买摇跑球 / Buy RunOrb</div>
+        <div class="about-content">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
+            <!-- 国内：微信小店 -->
+            <a href="#" href="#微信小店://摇跑俱乐部/GaOdhEAiRk8AzAa" style="display:flex;flex-direction:column;align-items:center;padding:28px 20px;background:linear-gradient(135deg,#07C160,#06AD56);color:#fff;border-radius:14px;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(7,193,96,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+              <i class="fab fa-weixin" style="font-size:48px;margin-bottom:16px"></i>
+              <div style="font-size:18px;font-weight:700;margin-bottom:6px">国内购买</div>
+              <div style="font-size:14px;opacity:0.9">微信小店</div>
+              <div style="font-size:13px;opacity:0.75;margin-top:8px;line-height:1.5;text-align:center">在微信中打开<br>搜索「摇跑俱乐部」</div>
+            </a>
+            <!-- 国外：阿里巴巴 -->
+            <a href="https://www.alibaba.com/product-detail/product_1601585685969.html" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;padding:28px 20px;background:linear-gradient(135deg,#FF6A00,#EE4B2B);color:#fff;border-radius:14px;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(255,106,0,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+              <i class="fas fa-globe" style="font-size:48px;margin-bottom:16px"></i>
+              <div style="font-size:18px;font-weight:700;margin-bottom:6px">海外购买</div>
+              <div style="font-size:14px;opacity:0.9">Alibaba 国际站</div>
+              <div style="font-size:13px;opacity:0.75;margin-top:8px;line-height:1.5;text-align:center">支持全球配送<br>搜索 RunOrb 摇跑球</div>
+            </a>
+          </div>
+
+          <div style="border-top:1px solid rgba(255,107,53,0.15);padding-top:20px">
+            <div class="about-section-title" style="margin-bottom:16px"><i class="fas fa-download"></i> App下载 / App Download</div>
+        <div class="about-content">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
+            <!-- Energy Index Mini Program -->
+            <div class="coop-card" style="text-align:center;padding:28px 20px">
+              <i class="fas fa-bolt" style="font-size:48px;color:var(--primary);margin-bottom:16px;display:block"></i>
+              <h4 style="margin-bottom:8px;font-size:18px" data-i18n="energyIndexLabel">活力指数<br><span style="font-size:14px;color:var(--text-secondary)">Energy Index</span></h4>
+              <p style="font-size:14px;color:var(--text-secondary);margin-top:12px;line-height:1.6" data-i18n="wechatMiniProgram">
+                微信小程序"我爱摇跑"<br>
+                <span style="font-size:13px">WeChat Mini Program "I love RunOrb"</span>
+              </p>
+            </div>
+            <!-- App Download -->
+            <div class="coop-card" style="text-align:center;padding:28px 20px">
+              <i class="fas fa-mobile-alt" style="font-size:48px;color:var(--primary);margin-bottom:16px;display:block"></i>
+              <h4 style="margin-bottom:12px;font-size:18px">App 下载<br><span style="font-size:14px;color:var(--text-secondary)">App Download</span></h4>
+              <div style="display:flex;flex-direction:column;gap:12px;margin-top:16px">
+                <a href="https://apps.apple.com/cn/app/runorb/id1559861575" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;background:var(--primary);color:#fff;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px;transition:opacity 0.2s" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                  <i class="fab fa-apple" style="font-size:20px"></i> iOS App Store: RunOrb
+                </a>
+                <a href="https://api.runorb.us/app/V1.2.2.13.apk" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;background:var(--primary);color:#fff;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px;transition:opacity 0.2s" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                  <i class="fab fa-android" style="font-size:20px"></i> Android 下载 (1)</a>
+                  <a href="https://api.runorb.us/app/V1.2.2.13.apk" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;background:var(--primary);color:#fff;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px;transition:opacity 0.2s" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                  <i class="fab fa-android" style="font-size:20px"></i> Android 下载 (R1)
+                </a>
+              </div>
+            </div>
+            <!-- 个人中心 -->
+            <div class="coop-card" style="text-align:center;padding:28px 20px;cursor:pointer" onclick="document.getElementById('btnLogin')?.click()">
+              <i class="fas fa-user-circle" style="font-size:48px;color:var(--secondary);margin-bottom:16px;display:block"></i>
+              <h4 style="margin-bottom:8px;font-size:18px">个人中心<br><span style="font-size:14px;color:var(--text-secondary)">My Profile</span></h4>
+              <p style="font-size:14px;color:var(--text-secondary);margin-top:12px;line-height:1.6">
+                登录后查看活力数据、积分、徽章、历史趋势<br>
+                <span style="font-size:13px">View stats, badges, history after login</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Platform Intro -->
+      <div class="about-section about-tab-content" id="section-intro" data-tab="intro" style="">
+        <div class="about-section-title"><i class="fas fa-rocket"></i data-i18n="aboutIntro"> 平台介绍</div>
+        <div class="about-content">
+          <!-- Product Showcase Video -->
+          <div style="position:relative;width:100%;max-width:640px;margin:0 auto 20px;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.2)">
+            <video controls preload="none" playsinline style="width:100%;display:block;background:#1e2a3a">
+              <source src="/videos/runorb-ad.mp4" type="video/mp4">
+            </video>
+          </div>
+          <p style="text-align:center;font-size:13px;color:var(--text-secondary);margin-bottom:20px" data-i18n="abt_产品展示">RunOrb Smart Gyroball — 产品展示</p>
+
+          <!-- 专利证书 Patent Certificates -->
+          <div style="margin-bottom:24px;padding:20px;background:linear-gradient(135deg,rgba(255,215,0,0.06),rgba(0,78,137,0.06));border-radius:12px;border:1px solid rgba(255,215,0,0.15)">
+            <h3 style="font-size:17px;margin:0 0 16px;text-align:center;color:var(--primary)"><i class="fas fa-award" style="margin-right:8px;color:#FFD700"></i>专利证书 Patents</h3>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:560px;margin:0 auto">
+              <a href="/docs/patent-design-2021307539112.pdf" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;padding:16px;background:var(--card-bg,#fff);border-radius:10px;border:1px solid var(--border);text-decoration:none;color:var(--text-primary);transition:transform 0.2s,box-shadow 0.2s;cursor:pointer" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+                <i class="fas fa-file-pdf" style="font-size:36px;color:#e74c3c;margin-bottom:10px"></i>
+                <div style="font-size:14px;font-weight:600;text-align:center;margin-bottom:4px">外观设计专利</div>
+                <div style="font-size:12px;color:var(--text-secondary);text-align:center">专利号：2021307539112</div>
+                <div style="font-size:12px;color:var(--text-secondary);text-align:center">2022.05.10 授权</div>
+              </a>
+              <a href="/docs/patent-utility-2021229454949.pdf" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;padding:16px;background:var(--card-bg,#fff);border-radius:10px;border:1px solid var(--border);text-decoration:none;color:var(--text-primary);transition:transform 0.2s,box-shadow 0.2s;cursor:pointer" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+                <i class="fas fa-file-pdf" style="font-size:36px;color:#e74c3c;margin-bottom:10px"></i>
+                <div style="font-size:14px;font-weight:600;text-align:center;margin-bottom:4px">实用新型专利</div>
+                <div style="font-size:12px;color:var(--text-secondary);text-align:center">专利号：2021229454949</div>
+                <div style="font-size:12px;color:var(--text-secondary);text-align:center">2022.06.14 授权 · 无线充电</div>
+              </a>
+            </div>
+          </div>
+
+          <p data-i18n="aboutIntroP1">摇跑活力指数排行榜致力于为全球摇跑运动爱好者打造一个专业、公平、透明的排名平台。我们以"摇跑活力指数（Energy Index）"为核心指标，综合评估用户的运动活力水平，通过精准的年龄性别分组、多维度的排名体系，确保每一位参与者都能在公平的环境中展示自己的实力。</p>
+          <p><strong data-i18n="aboutIntroP2Title">活力指数计算逻辑：</strong><span data-i18n="aboutFormula">活力指数基于用户在摇跑运动中的多项核心数据综合计算得出，包括最高转速、一分钟里程、持续运动时间等指标，通过科学的加权算法得出一个综合分数，全面反映用户的运动活力水平。指数越高，代表运动活力越强。</span></p>
+          <p><strong data-i18n="aboutIntroP3Title">核心价值：</strong data-i18n="aboutCoreValue">公平竞技 · 数据透明 · 全球覆盖 · 多维排名</p>
+        
+          <!-- 活力科普 -->
+          <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border)">
+            <h3 style="font-size:18px;margin-bottom:12px;color:var(--primary)"><i class="fas fa-flask"></i> 活力科普</h3>
+
+          <p><strong data-i18n="scienceQ1">什么是摇跑活力指数？</strong></p>
+          <p data-i18n="scienceA1">摇跑活力指数（Energy Index）是通过RunOrb智能陀螺球采集用户运动数据，综合最高转速、一分钟里程、持续运动时间等多项核心指标，经科学加权算法计算得出的综合评分。指数范围0-30，数值越高代表上肢运动活力越强。</p>
+          <p><strong data-i18n="scienceQ2">为什么需要关注肢体活力？</strong></p>
+          <p data-i18n="scienceA2">随着智能机器人逐步普及，人类日常肢体活动量持续下降。研究表明，上肢力量和手部精细运动能力与大脑认知功能密切相关。定期进行摇跑等上肢运动，不仅能增强肌肉力量、改善关节灵活性，还能有效预防"鼠标手"、"手机脖"等现代职业病。</p>
+          <p><strong data-i18n="scienceQ3">摇跑适合哪些人群？</strong></p>
+          <p data-i18n="scienceA3">摇跑适合所有年龄段人群：儿童可锻炼手眼协调能力，成人可缓解工作疲劳、增强上肢力量，长者可延缓肌肉退化、保持关节灵活，康复人群可在医生指导下进行科学的上肢康复训练。</p>
+        
+          </div>
+          <!-- 关于摇跑 -->
+          <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border)">
+            <h3 style="font-size:18px;margin-bottom:12px;color:var(--primary)"><i class="fas fa-running"></i> 关于摇跑</h3>
+
+          <h3 style="font-size:18px;margin-bottom:8px;color:var(--primary)">起源故事</h3>
+          <p style="font-size:15px;line-height:1.6;margin-bottom:16px">RunOrb（摇跑）是中国原创、拥有自主知识产权的创新健康运动。面对智能机器人逐步普及带来的肢体活动减少问题，RunOrb以1分钟快速测试为核心，通过专属设备与手机连接，精准检测身体活力指标。手部可动即可参与，全民友好，无需特殊操作。</p>
+
+          <h3 style="font-size:18px;margin-bottom:8px;color:var(--primary)">核心优势</h3>
+          <p style="font-size:15px;line-height:1.6;margin-bottom:16px">1分钟快速测试，精准量化活力指数；专属设备+手机APP，数据实时同步；全球排行榜，激发运动热情；科学健康，安全无风险。</p>
+
+          <h3 style="font-size:18px;margin-bottom:8px;color:var(--primary)">锻炼价值</h3>
+          <p style="font-size:15px;line-height:1.6;margin-bottom:16px">有效锻炼上肢力量、手部灵活性和心肺功能；缓解久坐带来的肩颈疲劳；适合各年龄段人群日常锻炼；可随时随地进行，不受场地限制。</p>
+
+          <h3 style="font-size:18px;margin-bottom:8px;color:var(--primary)">全民适配</h3>
+          <p style="font-size:15px;line-height:1.6;margin-bottom:16px">手部可动即可参与，全民友好，无需特殊操作。无论年龄、性别、身体条件，都能轻松上手。网站提供适配模式，支持屏幕朗读，确保每位用户都能顺畅使用。</p>
+        </div>
+
+        <!-- FAQ -->
+        <div class="about-section-title" style="margin-top:24px"><i class="fas fa-question-circle"></i> 常见问题</div>
+        <div style="margin-bottom:12px">
+          <input type="text" id="faqSearch" placeholder="搜索问题..." style="width:100%;padding:12px 16px;border:1px solid var(--border);border-radius:8px;font-size:15px;box-sizing:border-box" aria-label="搜索常见问题">
+        </div>
+        <div id="faqContainer">
+          <div class="faq-category">
+            <h4 style="font-size:16px;color:var(--primary);margin-bottom:12px">使用操作</h4>
+            <div class="faq-item"><strong>什么是活力指数？</strong><p>活力指数是综合衡量摇跑运动表现的核心指标，由最高转速和1分钟距离等数据综合计算得出。</p></div>
+            <div class="faq-item"><strong>如何参与排行榜？</strong><p>注册账号后，使用摇跑球完成运动，数据自动同步至排行榜。</p></div>
+            <div class="faq-item"><strong>如何查看个人数据？</strong><p>登录后点击导航栏"个人中心"，即可查看活力指数趋势、积分、徽章等。</p></div>
+            <div class="faq-item"><strong>排行榜数据多久更新？</strong><p>数据每30分钟与APP同步一次，排行榜实时展示最新数据。</p></div>
+            <div class="faq-item"><strong>如何点赞？</strong><p>登录后，在排行榜每行右侧点击爱心按钮即可点赞，再次点击可取消。</p></div>
+          </div>
+          <div class="faq-category">
+            <h4 style="font-size:16px;color:var(--primary);margin:16px 0 12px">数据同步</h4>
+            <div class="faq-item"><strong>数据同步失败怎么办？</strong><p>请检查手机蓝牙是否开启，确认APP已登录同一账号，然后点击"一键检查"。</p></div>
+            <div class="faq-item"><strong>网站和APP数据互通吗？</strong><p>是的，同一账号在网站和APP端数据完全同步一致。</p></div>
+            <div class="faq-item"><strong>最高转速和1分钟距离是什么？</strong><p>它们是活力指数的组成部分，不单独排行，仅在个人数据和排行榜条目中展示。</p></div>
+          </div>
+          <div class="faq-category">
+            <h4 style="font-size:16px;color:var(--primary);margin:16px 0 12px">分享功能</h4>
+            <div class="faq-item"><strong>如何分享我的活力指数？</strong><p>在排行榜或个人中心点击分享按钮，支持微信、微博、Facebook等平台。</p></div>
+            <div class="faq-item"><strong>分享有什么奖励？</strong><p>成功邀请好友注册并参与摇跑，邀请者可获得20积分。</p></div>
+          </div>
+          <div class="faq-category">
+            <h4 style="font-size:16px;color:var(--primary);margin:16px 0 12px">适配使用</h4>
+            <div class="faq-item"><strong>如何开启适配模式？</strong><p>点击页面右上角的适配模式图标即可开启，字体放大、界面简化。</p></div>
+            <div class="faq-item"><strong>支持哪些设备？</strong><p>支持手机（iOS 12+、Android 8+）、平板（iPadOS 12+、Android 8+）及主流浏览器。</p></div>
+            <div class="faq-item"><strong>支持屏幕朗读吗？</strong><p>支持，所有按钮和文字均添加了朗读标识，兼容VoiceOver、TalkBack等工具。</p></div>
+          </div>
+        
+          </div></div>
+      </div>
+
+      <!-- Energy Science -->
+      <div class="about-section about-tab-content" id="section-science" data-tab="science" style="display:none!important">
+        <div class="about-section-title"><i class="fas fa-flask"></i> <span data-i18n="navScience">活力科普</span></div>
+        <div class="about-content">
+          <p><strong data-i18n="scienceQ1">什么是摇跑活力指数？</strong></p>
+          <p data-i18n="scienceA1">摇跑活力指数（Energy Index）是通过RunOrb智能陀螺球采集用户运动数据，综合最高转速、一分钟里程、持续运动时间等多项核心指标，经科学加权算法计算得出的综合评分。指数范围0-30，数值越高代表上肢运动活力越强。</p>
+          <p><strong data-i18n="scienceQ2">为什么需要关注肢体活力？</strong></p>
+          <p data-i18n="scienceA2">随着智能机器人逐步普及，人类日常肢体活动量持续下降。研究表明，上肢力量和手部精细运动能力与大脑认知功能密切相关。定期进行摇跑等上肢运动，不仅能增强肌肉力量、改善关节灵活性，还能有效预防"鼠标手"、"手机脖"等现代职业病。</p>
+          <p><strong data-i18n="scienceQ3">摇跑适合哪些人群？</strong></p>
+          <p data-i18n="scienceA3">摇跑适合所有年龄段人群：儿童可锻炼手眼协调能力，成人可缓解工作疲劳、增强上肢力量，长者可延缓肌肉退化、保持关节灵活，康复人群可在医生指导下进行科学的上肢康复训练。</p>
+        </div>
+      </div>
+
+      <!-- Team -->
+      <div class="about-section">
+        <div class="about-section-title"><i class="fas fa-users-cog"></i data-i18n="aboutTeam"> 团队介绍</div>
+        <div class="about-content">
+          <p data-i18n="aboutTeamDesc">我们的团队由运动科学专家、数据分析师、技术开发者和运营人员组成，致力于为摇跑运动社区提供最优质的排名服务。</p>
+          <div class="team-grid">
+            <div class="team-member">
+              <div class="team-avatar"><i class="fas fa-user-tie"></i></div>
+              <div class="team-name" data-i18n="teamMember1">李明</div>
+              <div class="team-role" data-i18n="teamRole1">创始人 & CEO</div>
+            </div>
+            <div class="team-member">
+              <div class="team-avatar"><i class="fas fa-dumbbell"></i></div>
+              <div class="team-name" data-i18n="teamMember2">王芳</div>
+              <div class="team-role" data-i18n="teamRole2">运动科学顾问</div>
+            </div>
+            <div class="team-member">
+              <div class="team-avatar"><i class="fas fa-code"></i></div>
+              <div class="team-name" data-i18n="teamMember3">陈杰</div>
+              <div class="team-role" data-i18n="teamRole3">技术总监</div>
+            </div>
+            <div class="team-member">
+              <div class="team-avatar"><i class="fas fa-chart-bar"></i></div>
+              <div class="team-name" data-i18n="teamMember4">赵丽</div>
+              <div class="team-role" data-i18n="teamRole4">数据分析师</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Terms -->
+      <div class="about-section about-tab-content" id="section-terms" data-tab="terms" style="display:none">
+        <div class="about-section-title"><i class="fas fa-file-signature"></i> 用户服务协议</div>
+        <div class="about-content">
+          <p><strong>1. 服务说明：</strong>RunOrb 摇跑活力指数排行榜（bazu-ranking.cn）为用户提供摇跑运动活力指数排名及相关服务。用户注册即表示同意遵守本协议所有条款。</p>
+          <p><strong>2. 用户行为规范：</strong>用户应确保上传的所有运动数据真实有效，不得通过任何手段进行数据造假、恶意刷榜等违规行为。平台有权对违规行为进行处理，包括但不限于警告、数据清除、账号封禁等。</p>
+          <p><strong>3. 知识产权：</strong>本平台所有内容（包括但不限于文字、图片、视频、标识、界面设计）均受知识产权法保护。未经授权，不得复制、转载或用于商业用途。</p>
+          <p><strong>4. 免责声明：</strong>平台排名数据仅供参考，不构成任何运动建议或医疗建议。用户在进行摇跑运动时应注意安全，量力而行。因用户自身原因导致的任何损伤，平台不承担责任。</p>
+          <p><strong>5. 协议变更：</strong>平台有权随时修改本协议条款，修改后的协议将在网站上公布。用户继续使用本平台即视为同意修改后的协议。</p>
+        </div>
+      </div>
+
+      <!-- Privacy -->
+      <div class="about-section about-tab-content" id="section-privacy" data-tab="privacy" style="display:none">
+        <div class="about-section-title"><i class="fas fa-shield-alt"></i> 隐私政策</div>
+        <div class="about-content">
+          <div style="padding:16px;background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.2);border-radius:8px;margin-bottom:16px">
+            <p style="font-size:16px;color:#FF7A00;font-weight:600;margin:0">&#x2696;&#xFE0F; 公平参与承诺</p>
+            <p style="font-size:15px;margin:8px 0 0;line-height:1.6">所有用户采用同一活力指数计算标准，手部可动即可参与，无任何门槛差异。平台对所有用户一视同仁，确保排名公平公正。</p>
+          </div>
+          <p><strong>数据收集：</strong>我们仅收集用户主动提供的必要信息（手机号、昵称、运动数据），用于排行榜展示和个人运动追踪。</p>
+          <p><strong>数据使用：</strong>用户数据仅用于平台核心功能，不会泄露给任何第三方。</p>
+          <p><strong>数据安全：</strong>我们采用行业标准的安全措施保护用户数据。</p>
+          <p><strong>用户权利：</strong>用户可随时查看、修改或删除个人数据。如需删除账号，请联系客服。</p>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="about-section about-tab-content" id="section-contact" data-tab="contact" style="display:none">
+        <div class="about-section-title"><i class="fas fa-headset"></i> <span data-i18n="aboutContact">联系我们</span></div>
+        <div class="about-content">
+          <p data-i18n="contactDesc">如有任何问题、建议或合作意向，欢迎通过以下方式联系我们：</p>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <div class="info">
+                <div class="label" data-i18n="contactPhone">客服电话</div>
+                <div>400-888-6688</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <div class="info">
+                <div class="label" data-i18n="contactEmail">客服邮箱</div>
+                <div>runorbclub@gmail.com</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-clock"></i>
+              <div class="info">
+                <div class="label" data-i18n="contactHours">服务时间</div>
+                <div>周一至周日 9:00-21:00</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-comment-dots"></i>
+              <div class="info">
+                <div class="label" data-i18n="contactFeedback">在线反馈</div>
+                <div>网站内"意见反馈"入口</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 关于摇跑 -->
+      <div class="about-section about-tab-content" id="section-about-runorb" data-tab="about-runorb" style="display:none!important">
+        <div class="about-section-title"><i class="fas fa-running"></i> 关于摇跑</div>
+        <div class="about-content">
+          <h3 style="font-size:18px;margin-bottom:8px;color:var(--primary)">起源故事</h3>
+          <p style="font-size:15px;line-height:1.6;margin-bottom:16px">RunOrb（摇跑）是中国原创、拥有自主知识产权的创新健康运动。面对智能机器人逐步普及带来的肢体活动减少问题，RunOrb以1分钟快速测试为核心，通过专属设备与手机连接，精准检测身体活力指标。手部可动即可参与，全民友好，无需特殊操作。</p>
+
+          <h3 style="font-size:18px;margin-bottom:8px;color:var(--primary)">核心优势</h3>
+          <p style="font-size:15px;line-height:1.6;margin-bottom:16px">1分钟快速测试，精准量化活力指数；专属设备+手机APP，数据实时同步；全球排行榜，激发运动热情；科学健康，安全无风险。</p>
+
+          <h3 style="font-size:18px;margin-bottom:8px;color:var(--primary)">锻炼价值</h3>
+          <p style="font-size:15px;line-height:1.6;margin-bottom:16px">有效锻炼上肢力量、手部灵活性和心肺功能；缓解久坐带来的肩颈疲劳；适合各年龄段人群日常锻炼；可随时随地进行，不受场地限制。</p>
+
+          <h3 style="font-size:18px;margin-bottom:8px;color:var(--primary)">全民适配</h3>
+          <p style="font-size:15px;line-height:1.6;margin-bottom:16px">手部可动即可参与，全民友好，无需特殊操作。无论年龄、性别、身体条件，都能轻松上手。网站提供适配模式，支持屏幕朗读，确保每位用户都能顺畅使用。</p>
+        </div>
+
+        <!-- FAQ -->
+        <div class="about-section-title" style="margin-top:24px"><i class="fas fa-question-circle"></i> 常见问题</div>
+        <div style="margin-bottom:12px">
+          <input type="text" id="faqSearch2" placeholder="搜索问题..." style="width:100%;padding:12px 16px;border:1px solid var(--border);border-radius:8px;font-size:15px;box-sizing:border-box" aria-label="搜索常见问题">
+        </div>
+        <div id="faqContainer2">
+          <div class="faq-category">
+            <h4 style="font-size:16px;color:var(--primary);margin-bottom:12px">使用操作</h4>
+            <div class="faq-item"><strong>什么是活力指数？</strong><p>活力指数是综合衡量摇跑运动表现的核心指标，由最高转速和1分钟距离等数据综合计算得出。</p></div>
+            <div class="faq-item"><strong>如何参与排行榜？</strong><p>注册账号后，使用摇跑球完成运动，数据自动同步至排行榜。</p></div>
+            <div class="faq-item"><strong>如何查看个人数据？</strong><p>登录后点击导航栏"个人中心"，即可查看活力指数趋势、积分、徽章等。</p></div>
+            <div class="faq-item"><strong>排行榜数据多久更新？</strong><p>数据每30分钟与APP同步一次，排行榜实时展示最新数据。</p></div>
+            <div class="faq-item"><strong>如何点赞？</strong><p>登录后，在排行榜每行右侧点击爱心按钮即可点赞，再次点击可取消。</p></div>
+          </div>
+          <div class="faq-category">
+            <h4 style="font-size:16px;color:var(--primary);margin:16px 0 12px">数据同步</h4>
+            <div class="faq-item"><strong>数据同步失败怎么办？</strong><p>请检查手机蓝牙是否开启，确认APP已登录同一账号，然后点击"一键检查"。</p></div>
+            <div class="faq-item"><strong>网站和APP数据互通吗？</strong><p>是的，同一账号在网站和APP端数据完全同步一致。</p></div>
+            <div class="faq-item"><strong>最高转速和1分钟距离是什么？</strong><p>它们是活力指数的组成部分，不单独排行，仅在个人数据和排行榜条目中展示。</p></div>
+          </div>
+          <div class="faq-category">
+            <h4 style="font-size:16px;color:var(--primary);margin:16px 0 12px">分享功能</h4>
+            <div class="faq-item"><strong>如何分享我的活力指数？</strong><p>在排行榜或个人中心点击分享按钮，支持微信、微博、Facebook等平台。</p></div>
+            <div class="faq-item"><strong>分享有什么奖励？</strong><p>成功邀请好友注册并参与摇跑，邀请者可获得20积分。</p></div>
+          </div>
+          <div class="faq-category">
+            <h4 style="font-size:16px;color:var(--primary);margin:16px 0 12px">适配使用</h4>
+            <div class="faq-item"><strong>如何开启适配模式？</strong><p>点击页面右上角的适配模式图标即可开启，字体放大、界面简化。</p></div>
+            <div class="faq-item"><strong>支持哪些设备？</strong><p>支持手机（iOS 12+、Android 8+）、平板（iPadOS 12+、Android 8+）及主流浏览器。</p></div>
+            <div class="faq-item"><strong>支持屏幕朗读吗？</strong><p>支持，所有按钮和文字均添加了朗读标识，兼容VoiceOver、TalkBack等工具。</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Usage Guide -->
+      <div class="about-section about-tab-content" id="section-guide" data-tab="guide" style="display:none">
+        <div class="about-section-title"><i class="fas fa-book-open"></i> 使用指南</div>
+        <div class="about-content">
+          <div class="guide-steps">
+            <div class="guide-step">
+              <div class="guide-step-num">1</div>
+              <div class="guide-step-content">
+                <h4>下载APP</h4>
+                <p>在手机应用商店搜索"RunOrb"或扫描二维码下载安装。</p>
+              </div>
+            </div>
+            <div class="guide-step">
+              <div class="guide-step-num">2</div>
+              <div class="guide-step-content">
+                <h4>注册登录</h4>
+                <p>使用手机号注册账号，同一账号可在APP和网站通用。</p>
+              </div>
+            </div>
+            <div class="guide-step">
+              <div class="guide-step-num">3</div>
+              <div class="guide-step-content">
+                <h4>连接设备</h4>
+                <p>开启手机蓝牙，将摇跑球与APP配对连接。</p>
+              </div>
+            </div>
+            <div class="guide-step">
+              <div class="guide-step-num">4</div>
+              <div class="guide-step-content">
+                <h4>开始运动</h4>
+                <p>手持摇跑球摇动1分钟，APP自动记录活力指数、最高转速和1分钟距离。</p>
+              </div>
+            </div>
+            <div class="guide-step">
+              <div class="guide-step-num">5</div>
+              <div class="guide-step-content">
+                <h4>查看排名</h4>
+                <p>运动数据自动同步至排行榜，30分钟内更新，查看你的全球排名。</p>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:20px;padding:16px;background:rgba(30,136,229,0.06);border-radius:8px">
+            <p style="font-size:15px;margin:0"><i class="fas fa-volume-up" style="color:var(--secondary);margin-right:8px"></i><strong>语音指南：</strong>开启手机朗读功能（iOS: VoiceOver / Android: TalkBack），按步骤语音播报操作指引，适合视障用户使用。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Reviews -->
+      <div class="about-section about-tab-content" id="section-reviews" data-tab="reviews" style="display:none">
+        <div class="about-section-title"><i class="fas fa-star"></i> 用户评价</div>
+        <div class="about-content">
+          <div class="reviews-grid">
+            <div class="review-card">
+              <div class="review-header">
+                <div class="review-avatar" style="background:#FF6B35">张</div>
+                <div>
+                  <div class="review-name">张先生</div>
+                  <div class="review-meta">成年组 · 深圳</div>
+                </div>
+                <div class="review-stars">★★★★★</div>
+              </div>
+              <p class="review-text">"每天午休摇5分钟，肩颈酸痛明显缓解了。排行榜激励我每天坚持，活力指数从3.2涨到了8.7！"</p>
+            </div>
+            <div class="review-card">
+              <div class="review-header">
+                <div class="review-avatar" style="background:#004E89">李</div>
+                <div>
+                  <div class="review-name">李女士</div>
+                  <div class="review-meta">成年组 · 北京</div>
+                </div>
+                <div class="review-stars">★★★★★</div>
+              </div>
+              <p class="review-text">"给孩子买的，没想到全家都爱上了。操作简单，数据清晰，孩子每天主动要求打卡！"</p>
+            </div>
+            <div class="review-card">
+              <div class="review-header">
+                <div class="review-avatar" style="background:#1A936F">王</div>
+                <div>
+                  <div class="review-name">王大爷</div>
+                  <div class="review-meta">长青组 · 成都</div>
+                </div>
+                <div class="review-stars">★★★★☆</div>
+              </div>
+              <p class="review-text">"手部可动就能玩，对老年人很友好。每天摇一摇，手指灵活多了，还能和年轻人比排名！"</p>
+            </div>
+            <div class="review-card">
+              <div class="review-header">
+                <div class="review-avatar" style="background:#9B59B6">陈</div>
+                <div>
+                  <div class="review-name">陈同学</div>
+                  <div class="review-meta">少年组 · 上海</div>
+                </div>
+                <div class="review-stars">★★★★★</div>
+              </div>
+              <p class="review-text">"课间摇一摇，比玩手机有意思多了！我们班同学都在比谁的活力指数高，超有成就感！"</p>
+            </div>
+            <div class="review-card">
+              <div class="review-header">
+                <div class="review-avatar" style="background:#E74C3C">刘</div>
+                <div>
+                  <div class="review-name">刘女士</div>
+                  <div class="review-meta">成年组 · 广州</div>
+                </div>
+                <div class="review-stars">★★★★★</div>
+              </div>
+              <p class="review-text">"办公室久坐族必备！小巧便携，随时随地都能锻炼。排行榜让运动有了目标感，推荐给所有同事了。"</p>
+            </div>
+            <div class="review-card">
+              <div class="review-header">
+                <div class="review-avatar" style="background:#2ECC71">赵</div>
+                <div>
+                  <div class="review-name">赵先生</div>
+                  <div class="review-meta">成年组 · 杭州</div>
+                </div>
+                <div class="review-stars">★★★★★</div>
+              </div>
+              <p class="review-text">"康复期用的，医生推荐的上肢训练方式。数据记录很详细，能看到恢复进度，非常安心。"</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cooperation -->
+      <div class="about-section">
+        <div class="about-section-title"><i class="fas fa-handshake"></i data-i18n="aboutCoop"> 合作招募</div>
+        <div class="about-content">
+          <p data-i18n="coopDesc">我们诚邀各界合作伙伴共同推动摇跑运动发展，打造更完善的运动生态。</p>
+          <div class="coop-cards">
+            <div class="coop-card">
+              <i class="fas fa-tag"></i>
+              <h4 data-i18n="coopBrand">品牌合作</h4>
+              <p data-i18n="coopBrandDesc">运动品牌入驻，展示品牌用户群体的活力指数排名，提升品牌运动形象。</p>
+            </div>
+            <div class="coop-card">
+              <i class="fas fa-city"></i>
+              <h4 data-i18n="coopCity">城市合作</h4>
+              <p data-i18n="coopCityDesc">城市体育部门合作，推动全民健身，打造城市摇跑运动名片。</p>
+            </div>
+            <div class="coop-card">
+              <i class="fas fa-medal"></i>
+              <h4 data-i18n="coopEvent">赛事合作</h4>
+              <p data-i18n="coopEventDesc">联合举办线上/线下摇跑赛事，为参赛者提供官方排名与成绩认证。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 个人中心 Page ===== -->
+    <section class="page" id="page-profile">
+      <div class="lb-hero" style="background:linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%)">
+        <h1 class="lb-hero-title" style="color:#fff">个人中心</h1>
+        <p class="lb-hero-slogan" style="color:rgba(255,255,255,0.85)">查看你的活力数据、积分、徽章</p>
+      </div>
+
+      <!-- Data Sync Banner -->
+      <div class="sync-banner" id="syncBanner">
+        <i class="fas fa-sync-alt"></i>
+        <span>数据每30分钟与APP同步一次</span>
+        <button id="btnSyncCheck" style="margin-left:auto;background:rgba(255,255,255,0.2);border:none;color:#fff;padding:4px 12px;border-radius:4px;font-size:13px;cursor:pointer">
+          <i class="fas fa-search"></i> 一键检查
+        </button>
+      </div>
+      <div id="syncTroubleshoot" style="display:none" class="leaderboard-card" style="margin-bottom:16px">
+        <h4 style="font-size:16px;margin:0 0 12px"><i class="fas fa-tools"></i> 数据同步排查</h4>
+        <div id="syncSteps">
+          <div class="sync-step" data-step="bluetooth">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <span class="sync-step-icon" id="stepBtIcon">⬜</span>
+              <strong>步骤1：检查蓝牙</strong>
+            </div>
+            <p style="font-size:14px;color:var(--text-secondary);margin:0 0 8px">请确认手机蓝牙已开启，摇跑球已连接APP。</p>
+          </div>
+          <div class="sync-step" data-step="account">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <span class="sync-step-icon" id="stepAccIcon">⬜</span>
+              <strong>步骤2：检查账号</strong>
+            </div>
+            <p style="font-size:14px;color:var(--text-secondary);margin:0 0 8px">确认APP和网站登录的是同一个手机号账号。</p>
+          </div>
+          <div class="sync-step" data-step="data">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <span class="sync-step-icon" id="stepDataIcon">⬜</span>
+              <strong>步骤3：检查数据</strong>
+            </div>
+            <p style="font-size:14px;color:var(--text-secondary);margin:0">确认APP中已有运动记录，新数据需等待30分钟同步。</p>
+          </div>
+        </div>
+        <button id="btnRunSyncCheck" class="btn-primary" style="width:100%;margin-top:12px;min-height:44px">
+          <i class="fas fa-play-circle"></i> 开始检查
+        </button>
+        <div id="syncResult" style="margin-top:12px;display:none"></div>
+      </div>
+
+      <!-- Check-in -->
+      <div class="leaderboard-card" style="margin-bottom:16px;padding:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div>
+          <div style="font-size:16px;font-weight:600;margin-bottom:4px">每日打卡</div>
+          <div style="font-size:14px;color:var(--text-secondary)" id="checkinStatus">今日尚未打卡</div>
+        </div>
+        <button class="btn-primary" id="btnCheckin" style="min-height:48px;min-width:120px;font-size:16px">
+          <i class="fas fa-check-circle"></i> 立即打卡
+        </button>
+      </div>
+
+      <!-- Stats Cards -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px">
+        <div class="leaderboard-card" style="padding:16px;text-align:center">
+          <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px">活力指数</div>
+          <div style="font-size:24px;font-weight:700;color:var(--primary)" id="myEnergy">--</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">最高转速、1分钟距离为活力指数组成部分，不单独排行</div>
+        </div>
+        <div class="leaderboard-card" style="padding:16px;text-align:center">
+          <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px">最高转速</div>
+          <div style="font-size:24px;font-weight:700;color:var(--secondary)" id="myRpm">--</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">rpm</div>
+        </div>
+        <div class="leaderboard-card" style="padding:16px;text-align:center">
+          <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px">1分钟距离</div>
+          <div style="font-size:24px;font-weight:700;color:var(--accent)" id="myDist">--</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">km</div>
+        </div>
+        <div class="leaderboard-card" style="padding:16px;text-align:center">
+          <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px">我的积分</div>
+          <div style="font-size:24px;font-weight:700;color:var(--warning)" id="myPoints">0</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">连续打卡 <span id="myStreak">0</span> 天</div>
+        </div>
+      </div>
+
+      <!-- Data Trend Chart -->
+      <div class="leaderboard-card" style="padding:20px;margin-bottom:16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+          <h3 style="font-size:18px;margin:0">活力指数趋势</h3>
+          <div style="display:flex;gap:8px">
+            <button class="tab-btn active" data-period="day">日</button>
+            <button class="tab-btn" data-period="week">周</button>
+            <button class="tab-btn" data-period="month">月</button>
+          </div>
+        </div>
+        <canvas id="trendChart" width="600" height="200" style="width:100%;max-height:200px"></canvas>
+        <div id="trendEmpty" style="text-align:center;padding:40px;color:var(--text-secondary);display:none">
+          <i class="fas fa-chart-line" style="font-size:32px;margin-bottom:8px;display:block;opacity:0.3"></i>
+          暂无数据，快去运动吧！
+        </div>
+      </div>
+
+      <!-- Badges -->
+      <div class="leaderboard-card" style="padding:20px;margin-bottom:16px">
+        <h3 style="font-size:18px;margin:0 0 16px">我的徽章</h3>
+        <div id="badgesContainer" style="display:flex;flex-wrap:wrap;gap:12px">
+          <div style="text-align:center;padding:16px;color:var(--text-muted);width:100%">
+            <i class="fas fa-medal" style="font-size:24px;margin-bottom:8px;display:block;opacity:0.3"></i>
+            完成成就即可获得徽章
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly Challenge -->
+      <div class="leaderboard-card" style="padding:20px;margin-bottom:16px">
+        <h3 style="font-size:18px;margin:0 0 8px">🏆 每周活力挑战</h3>
+        <p style="font-size:14px;color:var(--text-secondary);margin:0 0 12px">本周目标：活力指数比上周提升 <span id="challengeTarget" style="color:var(--primary);font-weight:600">10%</span></p>
+        <div style="background:var(--bg-input);border-radius:8px;height:24px;overflow:hidden;margin-bottom:8px">
+          <div id="challengeProgress" style="height:100%;background:linear-gradient(90deg,var(--primary),#FFB74D);border-radius:8px;width:0%;transition:width 0.5s"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--text-secondary)">
+          <span>当前进度: <span id="challengeCurrent">--</span></span>
+          <span>目标: <span id="challengeGoal">--</span></span>
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);margin:8px 0 0">完成挑战可获得 <strong style="color:var(--primary)">50积分</strong> + <strong style="color:var(--primary)">挑战之星徽章</strong></p>
+      </div>
+
+      <!-- Points Exchange -->
+      <div class="leaderboard-card" style="padding:20px;margin-bottom:16px">
+        <h3 style="font-size:18px;margin:0 0 12px">🎁 积分兑换</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+          <div class="exchange-item" style="padding:12px;border:1px solid var(--border);border-radius:8px;text-align:center">
+            <div style="font-size:28px;margin-bottom:4px">🎾</div>
+            <div style="font-size:14px;font-weight:600">摇跑腕力球</div>
+            <div style="font-size:13px;color:var(--text-secondary);margin:4px 0">经典款</div>
+            <div style="font-size:16px;color:var(--primary);font-weight:700">200积分</div>
+            <button class="btn-primary" style="width:100%;margin-top:8px;min-height:36px;font-size:13px;padding:0" onclick="showToast('积分兑换功能即将上线','info')">兑换</button>
+          </div>
+          <div class="exchange-item" style="padding:12px;border:1px solid var(--border);border-radius:8px;text-align:center">
+            <div style="font-size:28px;margin-bottom:4px">🧢</div>
+            <div style="font-size:14px;font-weight:600">摇跑运动帽</div>
+            <div style="font-size:13px;color:var(--text-secondary);margin:4px 0">限量款</div>
+            <div style="font-size:16px;color:var(--primary);font-weight:700">500积分</div>
+            <button class="btn-primary" style="width:100%;margin-top:8px;min-height:36px;font-size:13px;padding:0" onclick="showToast('积分兑换功能即将上线','info')">兑换</button>
+          </div>
+          <div class="exchange-item" style="padding:12px;border:1px solid var(--border);border-radius:8px;text-align:center">
+            <div style="font-size:28px;margin-bottom:4px">👕</div>
+            <div style="font-size:14px;font-weight:600">摇跑文化衫</div>
+            <div style="font-size:13px;color:var(--text-secondary);margin:4px 0">定制款</div>
+            <div style="font-size:16px;color:var(--primary);font-weight:700">800积分</div>
+            <button class="btn-primary" style="width:100%;margin-top:8px;min-height:36px;font-size:13px;padding:0" onclick="showToast('积分兑换功能即将上线','info')">兑换</button>
+          </div>
+          <div class="exchange-item" style="padding:12px;border:1px solid var(--border);border-radius:8px;text-align:center">
+            <div style="font-size:28px;margin-bottom:4px">🏅</div>
+            <div style="font-size:14px;font-weight:600">专属徽章</div>
+            <div style="font-size:13px;color:var(--text-secondary);margin:4px 0">限定款</div>
+            <div style="font-size:16px;color:var(--primary);font-weight:700">1000积分</div>
+            <button class="btn-primary" style="width:100%;margin-top:8px;min-height:36px;font-size:13px;padding:0" onclick="showToast('积分兑换功能即将上线','info')">兑换</button>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);margin:12px 0 0">积分获取方式：每日打卡+10、邀请好友+20、完成挑战+50</p>
+      </div>
+
+      <!-- Invite Friends -->
+      <div class="leaderboard-card" style="padding:20px;margin-bottom:16px">
+        <h3 style="font-size:18px;margin:0 0 8px">邀请好友</h3>
+        <p style="font-size:14px;color:var(--text-secondary);margin:0 0 16px">邀请好友注册并完成首次摇跑，你获得20积分，好友获得10积分+新手徽章</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn-primary" id="btnCopyInvite" style="flex:1;min-height:44px">
+            <i class="fas fa-copy"></i> 复制邀请链接
+          </button>
+          <button class="btn-primary" id="btnShareInvite" style="flex:1;min-height:44px;background:var(--secondary)">
+            <i class="fas fa-share-alt"></i> 分享给好友
+          </button>
+        </div>
+        <div style="margin-top:12px;font-size:14px;color:var(--text-secondary)">
+          已邀请 <span id="inviteTotal">0</span> 人 · 成功参与 <span id="inviteActive">0</span> 人
+        </div>
+        <div style="margin-top:16px;text-align:center">
+          <canvas id="inviteQrCanvas" width="200" height="200" style="border:1px solid var(--border);border-radius:8px;display:none"></canvas>
+          <p id="qrLabel" style="font-size:13px;color:var(--text-muted);margin-top:8px;display:none">扫描二维码邀请好友</p>
+        </div>
+      </div>
+
+      <!-- Privacy Settings -->
+      <div class="leaderboard-card" style="padding:20px;margin-bottom:16px">
+        <h3 style="font-size:18px;margin:0 0 16px">隐私设置</h3>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <label style="display:flex;align-items:center;justify-content:space-between;cursor:pointer">
+            <div>
+              <div style="font-size:15px">运动数据公开</div>
+              <div style="font-size:13px;color:var(--text-secondary)">公开后，他人可在排行榜查看</div>
+            </div>
+            <input type="checkbox" class="privacy-toggle" data-key="dataPublic" checked style="width:44px;height:24px">
+          </label>
+          <label style="display:flex;align-items:center;justify-content:space-between;cursor:pointer">
+            <div>
+              <div style="font-size:15px">排名公开</div>
+              <div style="font-size:13px;color:var(--text-secondary)">公开后，你的排名将显示在排行榜</div>
+            </div>
+            <input type="checkbox" class="privacy-toggle" data-key="rankPublic" checked style="width:44px;height:24px">
+          </label>
+          <label style="display:flex;align-items:center;justify-content:space-between;cursor:pointer">
+            <div>
+              <div style="font-size:15px">接收活动通知</div>
+              <div style="font-size:13px;color:var(--text-secondary)">开启后，将收到活动推送</div>
+            </div>
+            <input type="checkbox" class="privacy-toggle" data-key="notifyEvents" checked style="width:44px;height:24px">
+          </label>
+          <label style="display:flex;align-items:center;justify-content:space-between;cursor:pointer">
+            <div>
+              <div style="font-size:15px">分享记录公开</div>
+              <div style="font-size:13px;color:var(--text-secondary)">公开后，他人可查看你的分享</div>
+            </div>
+            <input type="checkbox" class="privacy-toggle" data-key="sharePublic" checked style="width:44px;height:24px">
+          </label>
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="leaderboard-card" style="padding:20px;margin-bottom:16px">
+        <h3 style="font-size:18px;margin:0 0 8px">意见反馈</h3>
+        <p style="font-size:14px;color:var(--text-secondary);margin:0 0 16px">你的反馈对我们很重要</p>
+        <textarea id="feedbackContent" placeholder="请描述你的问题或建议（选填联系方式）" rows="4" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font-size:15px;resize:vertical;box-sizing:border-box"></textarea>
+        <input type="text" id="feedbackContact" placeholder="联系方式（选填）" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font-size:15px;margin-top:8px;box-sizing:border-box">
+        <div style="display:flex;gap:12px;margin-top:12px">
+          <button class="btn-primary" id="btnFeedback" style="flex:1;min-height:48px;font-size:16px">
+            <i class="fas fa-paper-plane"></i> 提交反馈
+          </button>
+          <button class="btn-primary" id="btnVoiceFeedback" style="min-height:48px;min-width:48px;background:var(--secondary);font-size:16px" aria-label="语音反馈">
+            <i class="fas fa-microphone"></i>
+          </button>
+        </div>
+        <div id="voiceFeedbackStatus" style="display:none;margin-top:8px;padding:8px 12px;background:rgba(30,136,229,0.06);border-radius:6px;font-size:14px;color:var(--secondary)">
+          <i class="fas fa-circle" style="color:#E74C3C;animation:pulse 1s infinite"></i> 录音中... <span id="voiceTimer">0</span>/60秒
+          <button id="btnStopVoice" style="float:right;background:none;border:none;color:var(--danger);cursor:pointer;font-size:14px">停止录音</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <i class="fas fa-bolt" style="color:var(--primary);font-size:24px"></i>
+          <span class="logo-text" style="font-size:18px;font-weight:700;color:var(--primary)" data-i18n="footerBrandName">全球RunOrb摇跑运动官方排行榜</span>
+        </div>
+        <p class="footer-slogan" data-i18n="footerSlogan">以1分钟RunOrb摇跑活力指数为核心标准，面向全球用户，展示个人、城市、国家、品牌及年龄组实时排名。</p>
+        <p class="footer-desc" data-i18n="footerDesc">本平台致力于推动全民上肢健康，打造简单、安全、公平、透明的全球运动数据体系。</p>
+        <p class="footer-features">
+          <span data-i18n="footerFeat1">原创运动</span>
+          <span class="footer-feat-sep">·</span>
+          <span data-i18n="footerFeat2">自主知识产权</span>
+          <span class="footer-feat-sep">·</span>
+          <span data-i18n="footerFeat3">适合全年龄段</span>
+        </p>
+        <p class="footer-contact">
+          <span data-i18n="footerEmail">📧 runorbclub@gmail.com</span>
+          <span style="margin-left:16px" data-i18n="footerWebsite">🌐 Bazu-ranking.cn</span>
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footerColPlatform">平台</h4>
+        <a href="#leaderboard" data-page="leaderboard" data-i18n="navRanking">活力排名</a>
+        <a href="#about/intro" data-page="about" data-section="intro" data-i18n="navIntro">摇跑介绍</a>
+        <a href="#about/join" data-page="about" data-section="join" data-i18n="navJoin">参与方式</a>
+        <a href="#about/science" data-page="about" data-section="science" data-i18n="navScience">活力科普</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footerColSupport">支持</h4>
+        <a href="#about/privacy" data-page="about" data-section="privacy" data-i18n="footerPrivacy">隐私政策</a>
+        <a href="#about/terms" data-page="about" data-section="terms" data-i18n="footerTerms">用户协议</a>
+        <a href="#about/contact" data-page="about" data-section="contact" data-i18n="navContact">联系我们</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footerColLang">语言</h4>
+        <a href="#" id="footerLangZh" style="color:var(--primary)">中文</a>
+        <a href="#" id="footerLangEn">English</a>
+        <a href="#" id="footerLangAr">العربية</a>
+        <a href="#" id="footerLangJa">日本語</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span data-i18n="footerCopyright">Copyright © 2026 RunOrb摇跑运动. All Rights Reserved.</span>
+      <span data-i18n="footerDataNote">数据每日更新 · 用户信息仅用于排行榜展示</span>
+    </div>
+  </footer>
+
+  <script>
+  // 版本号检测 + 防缓存
+  const SITE_VERSION = '20260423m';
+  const storedVersion = localStorage.getItem('bazu-site-version');
+  if (storedVersion !== SITE_VERSION) {
+    localStorage.setItem('bazu-site-version', SITE_VERSION);
+    if ('caches' in window) { caches.keys().then(n => n.forEach(k => caches.delete(k))); }
+  }
+  </script>
+  <script src="js/cities.js?v=1776907041" defer></script>
+  <script src="js/i18n.js?v=1776907041" defer></script>
+  <script src="js/app.js?v=1776907041" defer></script>
+</body>
+</html>
+
+<!-- deploy 20260412b -->

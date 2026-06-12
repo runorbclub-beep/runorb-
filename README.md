@@ -9,6 +9,8 @@ RunOrb 后端服务源码
 | api-server/ | 后端 API 服务 | PHP 8.2 + Laravel |
 | ws-server/ | PK WebSocket 服务 | PHP 8.2 + Swoole |
 | admin-panel/ | Web 后台管理 | Vue.js |
+| website/ | 官网 (bazu-ranking.com) | 静态 HTML + CF Pages + D1 |
+| handover/ | 开普敦交接文档 | - |
 
 ## 服务器信息
 - 服务器：DigitalOcean 新加坡 (129.212.236.200)
@@ -16,11 +18,13 @@ RunOrb 后端服务源码
 - API 域名：api.runorb.us
 - 管理后台：admin.runorb.us
 - WebSocket：wss://api.runorb.us/pkroom
+- 官网：https://bazu-ranking.com (Cloudflare Pages)
 
 ## 注意
 - `api-server/` 排除了 public/ (1.6G)、Sql/ (1.1G)、vendor/ (71M)、storage/ (13M)
 - `ws-server/` 排除了 vendor/ (47M)、public/ (38M)
 - 这些目录需要在部署时通过 composer install 等命令恢复
+- 所有硬编码密钥已替换为 env() 调用
 
 ## 文档
 - [双端上架全流程指南](./上架全流程指南.md)

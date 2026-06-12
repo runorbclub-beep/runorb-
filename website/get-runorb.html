@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>获取摇跑球 | Get Your RunOrb - Bazu-ranking.cn</title>
+  <link rel="stylesheet" href="css/style.css?v=1776249464">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .get-page { max-width: 800px; margin: 0 auto; padding: 30px 20px 60px; }
+    .get-hero {
+      text-align: center; padding: 40px 20px; margin-bottom: 40px;
+      background: linear-gradient(135deg, rgba(255,107,53,0.1) 0%, rgba(61,220,132,0.05) 100%);
+      border-radius: 20px; border: 1px solid rgba(255,107,53,0.15);
+    }
+    .get-hero .emoji { font-size: 64px; margin-bottom: 16px; }
+    .get-hero h1 { color: var(--text-primary); font-size: 28px; margin-bottom: 12px; }
+    .get-hero p { color: var(--text-secondary); font-size: 16px; max-width: 500px; margin: 0 auto; line-height: 1.6; }
+    .get-section { margin-bottom: 36px; }
+    .get-section h2 {
+      color: var(--primary); font-size: 20px; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .get-section h2 i { font-size: 22px; }
+    .step-card {
+      background: var(--card-bg); border: 1px solid var(--border-color);
+      border-radius: 14px; padding: 20px 24px; margin-bottom: 14px;
+      display: flex; align-items: flex-start; gap: 16px;
+      transition: all 0.3s;
+    }
+    .step-card:hover { border-color: var(--primary); transform: translateY(-1px); }
+    .step-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--primary); color: #fff; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 16px;
+    }
+    .step-content h3 { color: var(--text-primary); font-size: 16px; margin-bottom: 6px; }
+    .step-content p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+    .step-content a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    .step-content a:hover { text-decoration: underline; }
+
+    /* Two experience modes */
+    .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 36px; }
+    .mode-card {
+      background: var(--card-bg); border: 1px solid var(--border-color);
+      border-radius: 16px; padding: 24px 20px; text-align: center;
+      transition: all 0.3s; display: flex; flex-direction: column; align-items: center;
+    }
+    .mode-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .mode-card.primary { border-color: rgba(255,107,53,0.3); background: linear-gradient(135deg, rgba(255,107,53,0.06) 0%, var(--card-bg) 100%); }
+    .mode-icon { font-size: 40px; margin-bottom: 12px; }
+    .mode-card h3 { color: var(--text-primary); font-size: 17px; margin-bottom: 8px; }
+    .mode-card .mode-sub { color: var(--primary); font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+    .mode-card p { color: var(--text-secondary); font-size: 13px; line-height: 1.6; margin-bottom: 14px; }
+    .mode-card .mode-screenshot {
+      width: 100%; max-width: 160px; height: auto; aspect-ratio: 9/19.5;
+      object-fit: cover; border-radius: 12px; margin: 8px auto 14px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    /* Align images across cards */
+    .mode-grid { align-items: start; }
+    .mode-card .mode-text-area { flex: 1; }
+    .mode-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border-radius: 10px; font-size: 14px; font-weight: 700;
+      text-decoration: none; transition: all 0.3s;
+    }
+    .mode-btn.wechat { background: #07C160; color: #fff; }
+    .mode-btn.wechat:hover { background: #06ad56; }
+    .mode-btn.appstore { background: #000; color: #fff; }
+    .mode-btn.appstore:hover { background: #333; }
+    .mode-btn.android { background: var(--primary); color: #fff; }
+    .mode-btn.android:hover { background: var(--primary-hover); }
+
+    /* App screenshot */
+    .app-screenshot {
+      text-align: center; margin: 20px 0;
+    }
+    .app-screenshot img {
+      max-width: 220px; border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+    .app-screenshot .caption {
+      color: var(--text-secondary); font-size: 12px; margin-top: 8px;
+    }
+
+    /* CTA box */
+    .cta-box {
+      text-align: center; padding: 30px 24px; margin-top: 40px;
+      background: linear-gradient(135deg, rgba(255,107,53,0.12) 0%, rgba(61,220,132,0.08) 100%);
+      border: 1px solid rgba(255,107,53,0.2); border-radius: 16px;
+    }
+    .cta-box h3 { color: var(--text-primary); font-size: 20px; margin-bottom: 8px; }
+    .cta-box p { color: var(--text-secondary); font-size: 14px; margin-bottom: 16px; }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; background: var(--primary); color: #fff;
+      border-radius: 12px; font-size: 15px; font-weight: 700;
+      text-decoration: none; transition: all 0.3s;
+    }
+    .cta-btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+    /* Patent badge */
+    .patent-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(61,220,132,0.1); border: 1px solid rgba(61,220,132,0.2);
+      border-radius: 8px; padding: 6px 14px; font-size: 12px;
+      color: var(--success); margin-top: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .mode-grid { grid-template-columns: 1fr; }
+      .get-hero h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border-color);">
+    <a href="javascript:history.back()" style="color:var(--text-primary);text-decoration:none;font-size:16px;font-weight:700;">
+      <i class="fas fa-arrow-left" style="margin-right:8px;color:var(--primary);"></i>
+      <span data-i18n="siteName">摇跑活力指数</span>
+    </a>
+  </header>
+
+  <div class="get-page">
+    <!-- Hero -->
+    <div class="get-hero">
+      <div class="emoji">🏀</div>
+      <h1>获取你的摇跑球</h1>
+      <p>两种体验方式，随时随地检测你的活力指数，登上全球排行榜！</p>
+    </div>
+
+    <!-- Two Experience Modes -->
+    <div class="get-section">
+      <h2><i class="fas fa-mobile-alt"></i> 两种体验方式</h2>
+      <div class="mode-grid">
+        <!-- Mode 1: WeChat Mini Program -->
+        <div class="mode-card primary">
+          <div class="mode-icon">💚</div>
+          <h3>微信小程序</h3>
+          <div class="mode-sub">I Love RunOrb / 我爱摇跑</div>
+          <p>快速体验，1分钟活力指数检测（EI Index Check），无需下载App</p>
+          <p style="font-size:12px;color:var(--text-secondary);">需要微信 / WeChat</p>
+          <img src="images/ilove-runorb.jpg" alt="我爱摇跑小程序" class="mode-screenshot">
+          <a href="javascript:void(0)" class="mode-btn wechat" onclick="alert('请在微信中搜索小程序「我爱摇跑」或「I Love RunOrb」')">
+            <i class="fab fa-weixin"></i> 打开小程序
+          </a>
+        </div>
+
+        <!-- Mode 2: RunOrb App -->
+        <div class="mode-card">
+          <div class="mode-icon">📱</div>
+          <h3>RunOrb App</h3>
+          <div class="mode-sub">完整功能体验</div>
+          <p>个人数据记录、线上PK对战、排行榜打榜，完整运动体验</p>
+          <p style="font-size:12px;color:var(--text-secondary);">iOS / Android</p>
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+            <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a4/cd/6e/a4cd6e23-6035-7ec0-3a6e-49bd5176257a/367877b3-deff-47ab-8b16-16e7ec2f222a_Simulator_Screen_Shot_-_iPhone_13_Pro_Max_-_2022-01-12_at_18.00.56.png/300x650bb-60.jpg" alt="RunOrb App" class="mode-screenshot" style="margin-top:32px;">
+            <a href="https://apps.apple.com/cn/app/runorb/id1559861575" class="mode-btn appstore" target="_blank">
+              <i class="fab fa-apple"></i> App Store
+            </a>
+            <a href="https://api.runorb.us/app/V1.2.2.13.apk" class="mode-btn android" target="_blank">
+              <i class="fab fa-android"></i> Android (R2)
+            </a>
+            <a href="https://api.runorb.us/app/V1.2.2.13.apk" class="mode-btn android" target="_blank" style="background:#334;border:1px solid rgba(255,107,53,0.3)">
+              <i class="fab fa-android"></i> Android (蓝奏)
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How to Get RunOrb -->
+    <div class="get-section">
+      <h2><i class="fas fa-shopping-bag"></i> 如何获取摇跑球</h2>
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>📲 下载App或打开小程序</h3>
+          <p>选择上方两种方式之一，先体验摇跑运动</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>🏀 获取摇跑球</h3>
+          <p>通过以下方式获取摇跑球实物设备：</p>
+          <ul style="color: var(--text-secondary); font-size: 14px; margin-top: 8px; padding-left: 20px; line-height: 1.8;">
+            <li><strong style="color: var(--text-primary);">🟢 微信小店购买（国内推荐）：</strong><a href="#微信小店://摇跑俱乐部/GaOdhEAiRk8AzAa">点击进入摇跑俱乐部小店</a>（需在微信中打开）</li>
+            <li><strong style="color: var(--text-primary);">🌐 Alibaba国际站（海外购买）：</strong><a href="https://www.alibaba.com/product-detail/product_1601585685969.html" target="_blank">点击进入Alibaba商品页</a>（支持全球配送）</li>
+            <li>关注公众号"摇跑运动"了解最新活动和优惠</li>
+            <li>参与线上比赛有机会免费获得</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>🏆 开始测试 & 打榜</h3>
+          <p>连接蓝牙 → 1分钟摇跑 → 查看活力指数 → 登上全球排行榜！</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- What is RunOrb -->
+    <div class="get-section">
+      <h2><i class="fas fa-info-circle"></i> 什么是摇跑？</h2>
+      <div class="step-card" style="flex-direction: column; gap: 12px;">
+        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.8;">
+          <strong style="color: var(--text-primary);">摇跑（RunOrb）</strong>是一种创新的腕力球运动，通过旋转摇跑球带动内部陀螺高速旋转，产生离心力，锻炼上肢肌肉群和手部握力。
+        </p>
+        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.8;">
+          配合专属App，可以精准测量你的<strong style="color: var(--primary);">活力指数（Energy Index）</strong>、<strong style="color: var(--primary);">爆发力（Max RPM）</strong>和<strong style="color: var(--primary);">耐力</strong>三项指标，1分钟即可完成检测。
+        </p>
+        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.8;">
+          <strong style="color: var(--text-primary);">适合人群：</strong>久坐办公族、学生、退休长者、康复训练人群 —— 任何人都可以随时随地锻炼！
+        </p>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <h3>准备好了吗？</h3>
+      <p>下载App，获取摇跑球，开启你的活力之旅！</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="https://apps.apple.com/cn/app/runorb/id1559861575" class="cta-btn" target="_blank">
+          <i class="fab fa-apple"></i> App Store
+        </a>
+        <a href="https://api.runorb.us/app/V1.2.2.13.apk" class="cta-btn" target="_blank">
+          <i class="fab fa-android"></i> Android (R2)
+        </a>
+        <a href="https://api.runorb.us/app/V1.2.2.13.apk" class="cta-btn" target="_blank" style="background:#334;border:1px solid rgba(255,107,53,0.3)">
+          <i class="fab fa-android"></i> Android (蓝奏)
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer style="text-align:center; padding: 30px 20px; color: var(--text-secondary); font-size: 13px; border-top: 1px solid var(--border-color);">
+    <p>© 2024-2026 RunOrb / 摇跑运动 · 深圳市礼上科技有限公司</p>
+    <p style="margin-top: 6px;">中国外观设计专利 ZL 2021 3 0753911.2</p>
+  </footer>
+</body>
+</html>
