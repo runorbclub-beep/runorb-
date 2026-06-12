@@ -1,0 +1,103 @@
+亚马逊-开普敦，帐号：billyzhuhai@qq.com 密码：Runorb_2021	
+
+==================================================================
+外网面板地址: https://13.247.98.237:33837/a60f1f56
+新外网面板地址:https://13.247.96.136:33837/a60f1f56
+新2外网面板地址:https://13.246.57.49:33837/a60f1f56
+内网面板地址: https://172.31.13.186:33837/a60f1f56
+username: diwu4jpg
+password: 0b591977
+Warning:
+If you cannot access the panel, 
+release the following port (8888|888|80|443|20|21) in the security group
+注意：初始密码仅在首次登录面板前能正确获取，其它时间请通过 bt 5 命令修改密码
+==================================================================
+
+2e5fdbc974a646db
+
+
+
+临时禁用 SSL 证书验证
+yarn config set strict-ssl false
+yarn config set strict-ssl true
+
+消费队列任务命令
+/www/server/php/74/bin/php artisan queue:work
+/www/server/php/74/bin/php artisan queue:work --queue=runball
+# 后台运行队列命令，并重定向所有日志到指定文件
+nohup /www/server/php/74/bin/php artisan queue:work --queue=runball >> ./storage/logs/queue_runball.log 2>&1 &
+ps aux | grep 'artisan queue:work'
+
+清除缓存
+/www/server/php/74/bin/php artisan config:cache
+
+定时任务：查看任务计划的概述及其下次计划运行时间
+/www/server/php/74/bin/php artisan schedule:list
+执行脚本
+* * * * * cd /www/wwwroot/qyd-api-xw && /www/server/php/74/bin/php artisan schedule:run >> /dev/null 2>&1
+
+
+【swoole启动命令】
+sudo php bin/laravels restart &
+
+sudo php bin/laravels restart -d &
+
+2e5fdbc974a646db
+ps aux | grep swoole
+
+ps -ef|grep laravels
+
+lsof -i :5202
+
+netstat -tuln | grep 5202
+
+
+
+systemctl restart nginx
+
+
+
+
+
+
+
+
+《以下内容已弃用》
+南非(开普敦)亚马逊服务器
+IP：13.245.5.199
+用户名：ec2-user
+
+实例 ID i-02aab205ed70c8440 (南非(开普敦))
+1、打开 SSH 客户端。
+2、查找您的私有密钥文件。用于启动此实例的密钥为 runball.pem
+3、如有需要，运行此命令，以确保您的密钥不公开可见。
+ chmod 400 "runball.pem"
+4、通过其 公有 DNS 连接到您的实例:
+ec2-13-245-149-51.af-south-1.compute.amazonaws.com
+
+示例:
+ ssh -i "runball.pem" ec2-user@ec2-13-245-149-51.af-south-1.compute.amazonaws.com
+ssh -i "runball.pem" ec2-user@13.245.5.199
+
+
+
+
+=============注意：首次打开面板浏览器将提示不安全=================
+
+ 请选择以下其中一种方式解决不安全提醒
+ 1、下载证书，地址：https://dg2.bt.cn/ssl/baota_root.pfx，双击安装,密码【www.bt.cn】
+ 2、点击【高级】-【继续访问】或【接受风险并继续】访问
+ 教程：https://www.bt.cn/bbs/thread-117246-1-1.html
+
+========================面板账户登录信息==========================
+
+ 【云服务器】请在安全组放行 19978 端口
+ 外网面板地址: https://13.245.5.199:19978/4dc715f8
+ 内网面板地址: https://172.31.12.20:19978/4dc715f8
+ username: fsxwpewm
+ password: 9b66c54b
+
+ 浏览器访问以下链接，添加宝塔客服
+ https://www.bt.cn/new/wechat_customer
+==================================================================
+Time consumed: 7 Minute!

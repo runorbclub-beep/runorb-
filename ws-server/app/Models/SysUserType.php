@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * Created by Reliese Model.
+ */
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * Class SysUserType
+ * 
+ * @property string $sys_user_type_id
+ * @property int|null $created_time
+ * @property int|null $updated_time
+ * @property string|null $created_uid
+ * @property string|null $updated_uid
+ * @property int|null $status
+ * @property string|null $user_type_name
+ * @property string|null $user_type_code
+ * 
+ * @property Collection|UsrUser[] $usr_users
+ *
+ * @package App\Models
+ */
+class SysUserType extends Model
+{
+	protected $table = 'sys_user_type';
+	protected $primaryKey = 'sys_user_type_id';
+	public $incrementing = false;
+	
+	const CREATED_AT = 'created_time';
+    const UPDATED_AT = 'updated_time';
+
+	protected $casts = [
+		'created_time' => 'int',
+		'updated_time' => 'int',
+		'status' => 'int'
+	];
+
+	protected $fillable = [
+		'sys_user_type_id',
+		'created_time',
+		'updated_time',
+		'created_uid',
+		'updated_uid',
+		'status',
+		'user_type_name',
+		'user_type_code'
+	];
+
+	public function usr_users()
+	{
+		return $this->hasMany(UsrUser::class);
+	}
+}

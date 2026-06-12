@@ -1,0 +1,1 @@
+<div>Thank you for using Runorb, your verification code is: {{$number ?? ''}}</div>

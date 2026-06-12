@@ -1,0 +1,65 @@
+一、码云仓库地址：https://gitee.com
+1、点击右上角 “登录”按钮
+2、输入
+  账号：sales@leesun.com
+  密码：LeeSun20220422
+  登录
+3、会默认用手机验证码（该手机号已注销），在下面有个选择其他方式验证（邮箱验证码）
+4、邮箱验证码获取方式：
+  1）、找我要，我有登录方式获取最快；
+  2）、在https://mailh.qiye.163.com/进行登录
+  3}、账号：sales@leesun.com 密码：Awen#20260422 手机验证码：他必须要绑定一个手机号，目前是绑定了我的手机号15112692950，可以在域名哪里关闭必须绑定手机号选项后，可以解绑我的手机号，后不需要再用手机号
+  4）、获取到验证码
+5、代码仓库列表，之前封存项目：https://gitee.com/shenzhen-lishang
+
+二、亚马逊服务器
+https://signin.aws.amazon.com/
+亚马逊-开普敦，帐号：billyzhuhai@qq.com 密码：Runorb_2021
+
+宝塔登录方式：
+外网面板地址:https://13.246.57.49:33837/a60f1f56
+内网面板地址: https://172.31.13.186:33837/a60f1f56
+username: diwu4jpg
+password: 0b591977
+
+ssh登录方式：
+ip：13.246.57.49
+导入秘钥文件（不需要密码,文件夹内一起给了）：runball.pem
+
+
+三、网站地址
+官网地址; https://signin.aws.amazon.com/
+后端API：api.runorb.us
+后端服务ws长连接：ws.runorb.us
+后台管理：admin.runorb.us
+账号：admins
+密码：admin123!
+
+
+短信相关信息：
+服务商：https://cloud.zthysms.com/#/login
+账号：bazu88hy
+密码：13809803067
+
+短信发送用：
+https://api-gateway.zthysms.com/ims/v1/send
+账号：lishanghy
+密码：YK5Khn8M
+
+
+
+服务器代码路径（代码都没有拉仓库提交，这里是最新代码，文件过大无法提交码云仓库）：
+后端API服务：/www/wwwroot/qyd-api-xw
+后端ws服务：/www/wwwroot/websocket.hisport
+Web官网服务源码：/www/wwwroot/runball_website
+Web后台管理服务源码：/www/wwwroot/runball_admin
+
+
+
+
+
+
+
+
+
+

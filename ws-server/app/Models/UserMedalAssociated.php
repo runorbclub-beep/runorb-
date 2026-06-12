@@ -1,0 +1,63 @@
+<?php
+
+/**
+ * Created by Reliese Model.
+ */
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * Class UserMedalAssociated
+ * 
+ * @property string $user_medal_associated_id
+ * @property string|null $sys_medal_id
+ * @property string|null $user_id
+ * @property int|null $created_time
+ * @property int|null $updated_time
+ * @property string|null $created_uid
+ * @property string|null $updated_uid
+ * @property int|null $status
+ * 
+ * @property UsrUser|null $usr_user
+ * @property SysMedal|null $sys_medal
+ *
+ * @package App\Models
+ */
+class UserMedalAssociated extends Model
+{
+	protected $table = 'user_medal_associated';
+	protected $primaryKey = 'user_medal_associated_id';
+	public $incrementing = false;
+	
+	const CREATED_AT = 'created_time';
+    const UPDATED_AT = 'updated_time';
+
+	protected $casts = [
+		'created_time' => 'int',
+		'updated_time' => 'int',
+		'status' => 'int'
+	];
+
+	protected $fillable = [
+		'user_medal_associated_id',
+		'sys_medal_id',
+		'user_id',
+		'created_time',
+		'updated_time',
+		'created_uid',
+		'updated_uid',
+		'status'
+	];
+
+	public function usr_user()
+	{
+		return $this->belongsTo(UsrUser::class, 'user_id');
+	}
+
+	public function sys_medal()
+	{
+		return $this->belongsTo(SysMedal::class);
+	}
+}

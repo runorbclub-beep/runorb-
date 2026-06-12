@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="155" height="58" viewBox="0 0 155 58">
+  <defs>
+    <linearGradient id="linear-gradient" y1="0.5" x2="1" y2="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fde833"/>
+      <stop offset="1" stop-color="#fab32a"/>
+    </linearGradient>
+  </defs>
+  <g id="logo" transform="translate(-212 -88)">
+    <g id="组_20" data-name="组 20">
+      <g id="组_12" data-name="组 12" transform="translate(0 -1)">
+        <text id="全云动" transform="translate(285 116)" fill="#fde833" font-size="22" font-family="PingFangSC-Semibold, PingFang SC" font-weight="600" letter-spacing="0.1em"><tspan x="0" y="0">全云动</tspan></text>
+        <text id="RunOrb" transform="translate(296 138)" fill="#fde833" font-size="14" font-family="PingFangSC-Regular, PingFang SC"><tspan x="0" y="0">RunOrb</tspan></text>
+      </g>
+      <g id="组_11" data-name="组 11">
+        <g id="组_10" data-name="组 10" transform="translate(172.865 202.22)">
+          <path id="路径_2" data-name="路径 2" d="M84.355-78.506l-8.49-20.228H69.346L61.679-80.468a1.414,1.414,0,0,0,1.3,1.962h5.658L66.336-64.959,76.16-82.892H68.123l4.483-10.146,6.226,14.532Z" fill="url(#linear-gradient)"/>
+          <g id="组_9" data-name="组 9">
+            <g id="组_7" data-name="组 7">
+              <path id="路径_3" data-name="路径 3" d="M72.04-107.22A21.514,21.514,0,0,0,51.168-90.928h0a3.835,3.835,0,0,1-3.753,2.946h-.277v4.526H61.2l1.9-4.526H55.15a17.042,17.042,0,0,1,16.89-14.775A17.047,17.047,0,0,1,88.617-89.681h4.567A21.512,21.512,0,0,0,72.04-107.22Z" fill="url(#linear-gradient)"/>
+            </g>
+            <g id="组_8" data-name="组 8">
+              <path id="路径_4" data-name="路径 4" d="M65.566-69.957a17.075,17.075,0,0,1-10.1-11.8H50.9A21.534,21.534,0,0,0,64.8-65.472Z" fill="url(#linear-gradient)"/>
+              <path id="路径_5" data-name="路径 5" d="M82.109-87.983l1.9,4.526H88.93A16.935,16.935,0,0,1,86.7-77.04l.055.13h-.133A17.025,17.025,0,0,1,72.04-68.683a17.076,17.076,0,0,1-1.79-.1l-2.284,4.17a21.53,21.53,0,0,0,4.074.39A21.514,21.514,0,0,0,92.912-80.512h0a4.044,4.044,0,0,1,3.769-2.946h.452v-4.526Z" fill="url(#linear-gradient)"/>
+            </g>
+          </g>
+        </g>
+        <rect id="矩形_3" data-name="矩形 3" width="50" height="50" transform="translate(220 92)" fill="none"/>
+      </g>
+    </g>
+    <rect id="矩形_10" data-name="矩形 10" width="155" height="58" transform="translate(212 88)" fill="none"/>
+  </g>
+</svg>

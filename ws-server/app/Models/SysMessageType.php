@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * Created by Reliese Model.
+ */
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * Class SysMessageType
+ * 
+ * @property string $sys_message_type_id
+ * @property int|null $created_time
+ * @property int|null $updated_time
+ * @property string|null $created_uid
+ * @property string|null $updated_uid
+ * @property int|null $status
+ * @property string|null $sys_message_type_title
+ * 
+ * @property Collection|SysMessage[] $sys_messages
+ *
+ * @package App\Models
+ */
+class SysMessageType extends Model
+{
+	protected $table = 'sys_message_type';
+	protected $primaryKey = 'sys_message_type_id';
+	public $incrementing = false;
+	
+	const CREATED_AT = 'created_time';
+    const UPDATED_AT = 'updated_time';
+
+	protected $casts = [
+		'created_time' => 'int',
+		'updated_time' => 'int',
+		'status' => 'int'
+	];
+
+	protected $fillable = [
+		'sys_message_type_id',
+		'created_time',
+		'updated_time',
+		'created_uid',
+		'updated_uid',
+		'status',
+		'sys_message_type_title'
+	];
+
+	public function sys_messages()
+	{
+		return $this->hasMany(SysMessage::class);
+	}
+}

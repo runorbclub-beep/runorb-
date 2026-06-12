@@ -1,0 +1,419 @@
+<?php
+/**
+ * Standalone Swoole WebSocket Server for PK
+ * No Laravel dependency - uses raw Redis
+ * Uses Swoole\Process for push poller (no pcntl_fork needed)
+ */
+
+// Redis connection helper
+function getRedis($db = 13) {
+    static $connections = [];
+    if (!isset($connections[$db])) {
+        $redis = new Redis();
+        $redis->connect('127.0.0.1', 6379);
+        $redis->select($db);
+        $connections[$db] = $redis;
+    }
+    try {
+        $connections[$db]->ping();
+    } catch (Exception $e) {
+        $redis = new Redis();
+        $redis->connect('127.0.0.1', 6379);
+        $redis->select($db);
+        $connections[$db] = $redis;
+    }
+    return $connections[$db];
+}
+
+// Shared fd->room mapping table (Swoole\Table)
+$fdRoomTable = new Swoole\Table(1024);
+$fdRoomTable->column('pk_room_id', Swoole\Table::TYPE_STRING, 64);
+$fdRoomTable->column('user_id', Swoole\Table::TYPE_STRING, 64);
+$fdRoomTable->column('user_group', Swoole\Table::TYPE_STRING, 16);
+$fdRoomTable->create();
+
+// Push queue for worker processes to process
+$pushQueue = new Swoole\Table(1024);
+$pushQueue->column('payload', Swoole\Table::TYPE_STRING, 4096);
+$pushQueue->column('processed', Swoole\Table::TYPE_INT);
+$pushQueue->create();
+
+// Create Swoole WebSocket server
+$server = new Swoole\WebSocket\Server('0.0.0.0', 5202);
+
+$server->set([
+    'worker_num' => 1,
+    'daemonize' => 1,
+    'log_file' => '/www/wwwroot/websocket.hisport/storage/logs/pk_ws.log',
+    'pid_file' => '/www/wwwroot/websocket.hisport/storage/logs/pk_ws.pid',
+    'heartbeat_check_interval' => 60,
+    'heartbeat_idle_time' => 300,
+]);
+
+// Add push poller as custom process
+$pollerProcess = new Swoole\Process(function ($process) use ($server) {
+    error_log("Push poller process started, pid=" . getmypid());
+    
+    while (true) {
+        try {
+            $redis = getRedis(14);
+            while (true) {
+                $message = $redis->lpop('pk_ws_push_queue');
+                if (!$message) break;
+                
+                $payload = json_decode($message, true);
+                if (!$payload || !isset($payload['pk_room_id'])) continue;
+                
+                error_log("Push poller received: room=" . $payload['pk_room_id'] . " event=" . ($payload['event'] ?? 'unknown'));
+                
+                // Send to workers via pipe
+                $server->sendMessage(json_encode($payload), 0);
+            }
+        } catch (Throwable $e) {
+            error_log("Push poller error: " . $e->getMessage());
+        }
+        
+        usleep(300000); // 300ms
+    }
+}, false, 0, true);
+
+$server->addProcess($pollerProcess);
+
+// Handle pipe messages from poller process
+$server->on('PipeMessage', function ($server, $srcWorkerId, $message) {
+    $payload = json_decode($message, true);
+    if (!$payload || !isset($payload['pk_room_id'])) return;
+    
+    $pk_room_id = $payload['pk_room_id'];
+    $event = $payload['event'] ?? 'pkListChange';
+    
+    error_log("PipeMessage: room=" . $pk_room_id . " event=" . $event);
+    
+    // Get room data with fds
+    $redis13 = getRedis(13);
+    $roomData = $redis13->get($pk_room_id);
+    if (!$roomData) return;
+    
+    $room = json_decode($roomData, true);
+    if (!$room) return;
+    
+    $room['red'] = isset($room['red']) ? array_values($room['red']) : [];
+    $room['blue'] = isset($room['blue']) ? array_values($room['blue']) : [];
+    
+    // Build the push message
+    $returnData = [
+        'code' => 1,
+        'msg' => 'success',
+        'data' => $payload['data'] ?? ['event' => $event]
+    ];
+    
+    if (isset($payload['data']['list'])) {
+        $returnData['data']['list'] = $payload['data']['list'];
+    } else {
+        $returnData['data']['list'] = $room;
+    }
+    
+    // Push to all connected clients
+    foreach (['red', 'blue'] as $group) {
+        foreach ($room[$group] ?? [] as $user) {
+            if (isset($user['fd']) && $user['fd'] != 0) {
+                $msg = $returnData;
+                $msg['data']['list']['user_group'] = $group;
+                if ($server->isEstablished($user['fd'])) {
+                    $server->push($user['fd'], json_encode($msg));
+                    error_log("PipeMessage push to fd:" . $user['fd'] . " group:" . $group);
+                }
+            }
+        }
+    }
+});
+
+// Broadcast message to all users in a PK room
+function broadcastToRoom($server, $pk_room_id, $event, $extraData = []) {
+    $redis = getRedis(13);
+    $roomData = $redis->get($pk_room_id);
+    if (!$roomData) return;
+    
+    $room = json_decode($roomData, true);
+    if (!$room) return;
+    
+    $room['red'] = isset($room['red']) ? array_values($room['red']) : [];
+    $room['blue'] = isset($room['blue']) ? array_values($room['blue']) : [];
+    
+    $returnData = [
+        'code' => 1,
+        'msg' => 'success',
+        'data' => array_merge(['event' => $event], $extraData)
+    ];
+    
+    if ($event === 'pkListChange' || $event === 'pkStart') {
+        if (isset($room['status']) && $room['status'] == 2) {
+            $room['time_long'] = ($room['pk_stop_time'] ?? time()) - time();
+        }
+        $returnData['data']['list'] = $room;
+    }
+    
+    foreach (['red', 'blue'] as $group) {
+        foreach ($room[$group] ?? [] as $user) {
+            if (isset($user['fd']) && $user['fd'] != 0) {
+                $msg = $returnData;
+                $msg['data']['list']['user_group'] = $group;
+                if ($server->isEstablished($user['fd'])) {
+                    $server->push($user['fd'], json_encode($msg));
+                    error_log("Broadcast to fd:" . $user['fd'] . " group:" . $group . " event:" . $event);
+                }
+            }
+        }
+    }
+}
+
+// Handle pk_ready event
+function handlePkReady($server, $data) {
+    $redis = getRedis(13);
+    $room = json_decode($redis->get($data['pk_room_id']), true);
+    
+    if (!$room) return 'pkListChange';
+    if (!isset($room[$data['user_group']]) || !isset($room[$data['user_group']][$data['user_id']])) {
+        return 'pkListChange';
+    }
+    
+    $room[$data['user_group']][$data['user_id']]['is_ready'] = 1;
+    $redis->setex($data['pk_room_id'], 86400, json_encode($room));
+    
+    $allReady = true;
+    foreach ($room['red'] ?? [] as $user) {
+        if (($user['is_ready'] ?? 0) == 0) { $allReady = false; break; }
+    }
+    foreach ($room['blue'] ?? [] as $user) {
+        if (($user['is_ready'] ?? 0) == 0) { $allReady = false; break; }
+    }
+    
+    if ($allReady && count($room['red'] ?? []) > 0 && count($room['blue'] ?? []) > 0) {
+        $room['status'] = 2;
+        $room['pk_start_time'] = time();
+        $room['pk_stop_time'] = $room['pk_start_time'] + 9 + ($room['time_long'] ?? 0);
+        $redis->setex($data['pk_room_id'], 86400, json_encode($room));
+        error_log("PK START: room=" . $data['pk_room_id']);
+        return 'pkStart';
+    }
+    
+    return 'pkListChange';
+}
+
+// Handle pk_unready event
+function handlePkUnReady($server, $data) {
+    $redis = getRedis(13);
+    $room = json_decode($redis->get($data['pk_room_id']), true);
+    
+    if (!$room) return;
+    if (!isset($room[$data['user_group']]) || !isset($room[$data['user_group']][$data['user_id']])) return;
+    
+    $room[$data['user_group']][$data['user_id']]['is_ready'] = 0;
+    $redis->setex($data['pk_room_id'], 86400, json_encode($room));
+}
+
+// Handle between_play event
+function handleBetweenPlay($server, $data) {
+    $redis = getRedis(13);
+    $room = json_decode($redis->get($data['pk_room_id']), true);
+    
+    if (!$room) return 'between_play_error';
+    if (!isset($room[$data['user_group']]) || !isset($room[$data['user_group']][$data['user_id']])) {
+        return 'between_play_error';
+    }
+    
+    $room[$data['user_group']][$data['user_id']]['circle_count'] = $data['circle_detail'] ?? [];
+    $room[$data['user_group']][$data['user_id']]['speed'] = $data['speed_detail'] ?? [];
+    
+    if (isset($data['is_abnormal']) && $data['is_abnormal'] == 1) {
+        $room[$data['user_group']][$data['user_id']]['is_abnormal'] = 1;
+    }
+    
+    $redis->setex($data['pk_room_id'], 86400, json_encode($room));
+    return 'between_play';
+}
+
+// Handle pk_stop event
+function handlePkStop($server, $data) {
+    $redis = getRedis(1);
+    $redis->rpush('user_pk_data', json_encode($data));
+    return 'pkListChange';
+}
+
+// Handle pk_cancel event
+function handlePkCancel($server, $data) {
+    $redis1 = getRedis(1);
+    $redis1->rpush('user_pk_data', json_encode($data));
+    
+    $redis13 = getRedis(13);
+    $room = json_decode($redis13->get($data['pk_room_id']), true);
+    
+    if (!$room) return 'pkListChange';
+    
+    unset($room[$data['user_group']][$data['user_id']]);
+    $redis13->setex($data['pk_room_id'], 86400, json_encode($room));
+    
+    return 'pkListChange';
+}
+
+// Handle bind_again (reconnect)
+function handleBindAgain($server, $fd, $data) {
+    $redis = getRedis(13);
+    $room = json_decode($redis->get($data['pk_room_id']), true);
+    
+    if (!$room) return;
+    
+    if ($room['status'] == 2) {
+        $newTimeLong = time() - $room['pk_start_time'];
+    } else {
+        $newTimeLong = time() - $room['pk_start_time'] + 9;
+    }
+    $room['time_long'] = $newTimeLong;
+    
+    $circleDistance = 16.5876089;
+    $redCircleCount = 0;
+    $blueCircleCount = 0;
+    
+    foreach ($room['red'] ?? [] as $node) {
+        $circles = $node['circle_count'] ?? [];
+        $redCircleCount += $circles[count($circles) - 1] ?? 0;
+    }
+    foreach ($room['blue'] ?? [] as $node) {
+        $circles = $node['circle_count'] ?? [];
+        $blueCircleCount += $circles[count($circles) - 1] ?? 0;
+    }
+    
+    $room['red_distance'] = round($redCircleCount * $circleDistance / 100 / 1000, 3);
+    $room['blue_distance'] = round($blueCircleCount * $circleDistance / 100 / 1000, 3);
+    $room['user_group'] = $data['user_group'];
+    
+    $returnData = [
+        'code' => 1,
+        'msg' => 'success',
+        'data' => [
+            'event' => 'bind_again',
+            'list' => $room
+        ]
+    ];
+    
+    $server->push($fd, json_encode($returnData));
+}
+
+$server->on('Open', function ($server, $request) use ($fdRoomTable) {
+    $fd = $request->fd;
+    error_log("WS Open: fd=" . $fd);
+    
+    $language = $request->header['language'] ?? 'zh-CN';
+    $pkDataRaw = $request->header['pkdata'] ?? '';
+    $pkData = json_decode($pkDataRaw, true);
+    
+    error_log("WS Open: fd=" . $fd . " pkdata=" . $pkDataRaw);
+    
+    $testUserPlay = $pkData['test_user_play'] ?? '';
+    if ($testUserPlay != '') {
+        $redis = getRedis(13);
+        $redis->setex($testUserPlay, 86400, $fd);
+        $server->push($fd, json_encode(['code' => 1, 'msg' => 'success', 'event' => 'connection_success', 'data' => ['fd' => $fd]]));
+        return;
+    }
+    
+    $pkRoomId = $pkData['pk_room_id'] ?? '';
+    if ($pkRoomId == '') {
+        $server->push($fd, json_encode(['code' => 0, 'event' => 'error', 'msg' => 'Missing pk_room_id']));
+        return;
+    }
+    
+    $redis = getRedis(13);
+    $room = json_decode($redis->get($pkRoomId), true);
+    
+    // Store fd mapping
+    $redis12 = getRedis(12);
+    $redis12->setex($fd, 18000, $pkDataRaw);
+    
+    if (!$room) {
+        error_log("WS Open: room not found fd=" . $fd . " room=" . $pkRoomId);
+        $server->push($fd, json_encode(['code' => 0, 'event' => 'error', 'msg' => 'Room not found']));
+        return;
+    }
+    
+    $userGroup = $pkData['user_group'] ?? '';
+    $userId = $pkData['user_id'] ?? '';
+    
+    if ($userGroup && $userId && isset($room[$userGroup]) && isset($room[$userGroup][$userId])) {
+        $room[$userGroup][$userId]['fd'] = $fd;
+        $redis->setex($pkRoomId, 86400, json_encode($room));
+        error_log("WS Open: stored fd=" . $fd . " for user=" . $userId . " group=" . $userGroup . " room=" . $pkRoomId);
+        
+        broadcastToRoom($server, $pkRoomId, 'pkListChange');
+    }
+    
+    $server->push($fd, json_encode(['code' => 1, 'msg' => 'success', 'event' => 'connection_success', 'data' => ['fd' => $fd]]));
+    error_log("WS Open: success fd=" . $fd);
+});
+
+$server->on('Message', function ($server, $frame) {
+    error_log("WS Message: fd=" . $frame->fd . " data=" . substr($frame->data, 0, 200));
+    
+    $data = json_decode($frame->data, true);
+    if (!$data) return;
+    
+    if (($data['event'] ?? '') === 'heartbeat') return;
+    
+    $event = $data['event'] ?? '';
+    $pkRoomId = $data['pk_room_id'] ?? '';
+    
+    if (!$pkRoomId) return;
+    
+    $msgEvent = '';
+    
+    switch ($event) {
+        case 'between_play':
+            $msgEvent = handleBetweenPlay($server, $data);
+            if ($msgEvent === 'between_play_error') {
+                $server->push($frame->fd, json_encode([
+                    'code' => 1, 'msg' => 'success',
+                    'data' => ['event' => 'between_play_error', 'msg' => 'User Not Found']
+                ]));
+            }
+            break;
+            
+        case 'pk_ready':
+            $msgEvent = handlePkReady($server, $data);
+            break;
+            
+        case 'pk_unready':
+            handlePkUnReady($server, $data);
+            $msgEvent = 'pkListChange';
+            break;
+            
+        case 'pk_stop':
+            $msgEvent = handlePkStop($server, $data);
+            break;
+            
+        case 'bind_again':
+            handleBindAgain($server, $frame->fd, $data);
+            return;
+            
+        default:
+            $msgEvent = handlePkCancel($server, $data);
+            break;
+    }
+    
+    error_log("WS Message: event=" . $event . " -> msgEvent=" . $msgEvent);
+    
+    if ($msgEvent && $msgEvent !== 'between_play') {
+        broadcastToRoom($server, $pkRoomId, $msgEvent);
+    }
+});
+
+$server->on('Close', function ($server, $fd) use ($fdRoomTable) {
+    error_log("WS Close: fd=" . $fd);
+});
+
+$server->on('WorkerStart', function ($server, $workerId) {
+    error_log("Worker started: id=" . $workerId);
+});
+
+echo "Starting PK WebSocket server...\n";
+$server->start();
+
