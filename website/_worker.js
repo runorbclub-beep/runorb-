@@ -1,19 +1,97 @@
 // _worker.js — CF Pages Advanced Mode worker
-// Handles /api/* requests via D1, passes everything else to static assets
+// Handles /api/* requests via D1 / API function, passes everything else to static assets
+// Returns proper 404 for non-existent pages instead of serving index.html (Soft 404 fix)
+
+// Known valid static file paths (exact and pattern-based)
+const KNOWN_FILES = new Set([
+  '/', '/index.html', '/get-runorb.html',
+  '/privacy.html', '/terms.html', '/404.html',
+  '/robots.txt', '/sitemap.xml',
+  '/favicon.svg',
+  '/BingSiteAuth.xml',
+  '/googled201f3458aabc561.html',
+  '/baidu_verify_codeva-PynWpAHt3M.html',
+]);
+
+const KNOWN_PREFIXES = [
+  '/css/', '/js/', '/docs/', '/videos/', '/assets/',
+];
+
+function isValidPath(pathname) {
+  if (KNOWN_FILES.has(pathname)) return true;
+  for (const prefix of KNOWN_PREFIXES) {
+    if (pathname.startsWith(prefix)) return true;
+  }
+  // Allow known verification files
+  if (pathname.endsWith('.xml') || pathname.endsWith('.html') || pathname.endsWith('.mp4')) return true;
+  // Allow known doc paths
+  if (pathname.includes('/docs/')) return true;
+  return false;
+}
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // API requests → handle with D1
+    // API requests → handle with D1 / API function
     if (url.pathname.startsWith('/api/')) {
       return handleApi(request, env, url);
     }
 
-    // Everything else → static assets (CF Pages default)
-    return env.ASSETS.fetch(request);
+    // Static files: only serve valid paths, return 404 for everything else
+    if (!isValidPath(url.pathname)) {
+      // Try to serve the custom 404 page
+      try {
+        const notFound = await env.ASSETS.fetch(new Request(new URL('/404.html', url)));
+        return new Response(notFound.body, {
+          status: 404,
+          statusText: 'Not Found',
+          headers: getSecurityHeaders(notFound.headers, 'text/html; charset=utf-8'),
+        });
+      } catch {
+        return new Response('404 Not Found', {
+          status: 404,
+          headers: getSecurityHeaders(null, 'text/plain; charset=utf-8'),
+        });
+      }
+    }
+
+    // Serve valid static assets
+    const response = await env.ASSETS.fetch(request);
+
+    // Apply security headers
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: getSecurityHeaders(response.headers, response.headers.get('content-type')),
+    });
   },
 };
+
+// ========== Security Headers ==========
+function getSecurityHeaders(originalHeaders, contentType) {
+  const headers = new Headers();
+
+  // Preserve original headers
+  if (originalHeaders) {
+    for (const [key, value] of originalHeaders.entries()) {
+      headers.set(key, value);
+    }
+  }
+
+  // Override/add security headers
+  if (contentType) headers.set('Content-Type', contentType);
+  headers.set('X-Content-Type-Options', 'nosniff');
+  headers.set('X-Frame-Options', 'DENY');
+  headers.set('X-XSS-Protection', '1; mode=block');
+  headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), interest-cohort=()');
+  // Remove Cloudflare NEL/report-to headers that expose server info
+  headers.delete('report-to');
+  headers.delete('nel');
+
+  return headers;
+}
 
 // ===================== API Router =====================
 async function handleApi(request, env, url) {

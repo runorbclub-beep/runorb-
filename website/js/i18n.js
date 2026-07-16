@@ -276,7 +276,7 @@ const I18N = {
     evt_公益贡献奖报名费捐赠: '🏅 公益贡献奖（报名费捐赠）',
     evt_公益项目联合执行: '公益项目联合执行',
     evt_决赛全程线上直播全球同步观赛: '决赛全程线上直播，全球同步观赛',
-    evt_受益方公益基金待定: '受益方：公益基金（待定）',
+    evt_受益方公益基金待定: '受益方：公益基金（筹备中，敬请期待）',
     evt_各组别亚军亚军奖牌证书: '🥈 各组别亚军：亚军奖牌 + 证书',
     evt_各组别冠军冠军奖杯证书: '🥇 各组别冠军：冠军奖杯 + 证书 + 奖金',
     evt_各组别季军季军奖牌证书: '🥉 各组别季军：季军奖牌 + 证书',
@@ -662,7 +662,7 @@ const I18N = {
     evt_公益贡献奖报名费捐赠: '🏅 公益贡献奖（报名费捐赠）',
     evt_公益项目联合执行: '公益项目联合执行',
     evt_决赛全程线上直播全球同步观赛: '决赛全程线上直播，全球同步观赛',
-    evt_受益方公益基金待定: '受益方：公益基金（待定）',
+    evt_受益方公益基金待定: '受益方：公益基金（筹备中，敬请期待）',
     evt_各组别亚军亚军奖牌证书: '🥈 各组别亚军：亚军奖牌 + 证书',
     evt_各组别冠军冠军奖杯证书: '🥇 各组别冠军：冠军奖杯 + 证书 + 奖金',
     evt_各组别季军季军奖牌证书: '🥉 各组别季军：季军奖牌 + 证书',
@@ -1167,17 +1167,13 @@ function translateName(name) {
   return CITY_MAP[name] || COUNTRY_MAP[name] || name;
 }
 
-// Current language — read from URL param, then localStorage, then browser lang
+// Current language — read from URL param, then localStorage, then default to English
 var currentLang = (function() {
   const params = new URLSearchParams(window.location.search);
   const urlLang = params.get('lang');
   if (['zh','en','ar','ja'].includes(urlLang)) return urlLang;
   const stored = localStorage.getItem('bazu-lang');
   if (['zh','en','ar','ja'].includes(stored)) return stored;
-  const nav = navigator.language || navigator.userLanguage || '';
-  if (nav.startsWith('zh')) return 'zh';
-  if (nav.startsWith('ar')) return 'ar';
-  if (nav.startsWith('ja')) return 'ja';
   return 'en';
 })();
 

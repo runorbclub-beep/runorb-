@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head><!-- v20260421-videos -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,23 +8,86 @@
   <meta name="keywords" content="摇跑,活力指数,Energy Index,排行榜,运动排名,摇跑运动,运动数据,排名平台">
   <meta name="author" content="摇跑活力指数排行榜">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://bazu-ranking.cn/">
+  <link rel="canonical" href="https://bazu-ranking.com/">
 
   <!-- Open Graph / 社交分享 -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="摇跑活力指数排行榜 | Energy Index Leaderboard">
   <meta property="og:description" content="全球首个摇跑运动专属排行榜平台，以活力指数为核心，打造公平透明的多维竞技排名体系。">
-  <meta property="og:url" content="https://bazu-ranking.cn/">
+  <meta property="og:url" content="https://bazu-ranking.com/">
   <meta property="og:site_name" content="摇跑活力指数排行榜">
   <meta property="og:locale" content="zh_CN">
+  <meta property="og:image" content="https://bazu-ranking.com/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/svg+xml">
   <meta name="baidu-site-verification" content="codeva-PynWpAHt3M" />
 
-  <!-- Favicon (可替换为你的 logo) -->
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="摇跑活力指数排行榜 | Energy Index Leaderboard">
+  <meta name="twitter:description" content="全球首个摇跑运动专属排行榜平台，以活力指数为核心，打造公平透明的多维竞技排名体系。">
+  <meta name="twitter:image" content="https://bazu-ranking.com/og-image.svg">
+
+  <!-- Structured Data - Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "摇跑活力指数排行榜",
+    "alternateName": ["Energy Index Leaderboard", "Bazu Ranking"],
+    "url": "https://bazu-ranking.com",
+    "description": "全球首个摇跑运动专属排行榜平台，以活力指数（Energy Index）为核心，涵盖个人排名、品牌排名、城市排名、国家排名，打造公平透明的多维竞技排名体系。",
+    "inLanguage": ["zh-CN", "en"],
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://bazu-ranking.com/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- Structured Data - Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "摇跑活力指数排行榜",
+    "url": "https://bazu-ranking.com",
+    "logo": "https://bazu-ranking.com/favicon.svg",
+    "description": "全球首个摇跑运动专属排行榜平台",
+    "foundingDate": "2025"
+  }
+  </script>
+
+  <!-- Structured Data - Sports Event (Charity Championship) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SportsEvent",
+    "name": "RunOrb 摇跑全民活力公益锦标赛",
+    "description": "全国首个摇跑运动公益性赛事，倡导全民运动活力生活理念",
+    "url": "https://bazu-ranking.com/#news",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+    "location": {
+      "@type": "VirtualLocation",
+      "url": "https://bazu-ranking.com"
+    },
+    "organizer": {
+      "@type": "Organization",
+      "name": "摇跑活力指数排行榜",
+      "url": "https://bazu-ranking.com"
+    }
+  }
+  </script>
+
+  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 
   <link rel="stylesheet" href="css/style.css?v=1776907041">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer crossorigin="anonymous" integrity="sha384-Z3YOz8pOXJ2M1pPhMGNe8qB1y8SdGE4e7XMnG4Gl+36mHF5jFcctKf5JDC1Trxm"></script>
 </head>
 <body>
 
@@ -767,7 +830,7 @@
             <h3 data-i18n="evtCharityMission">公益使命</h3>
             <ul>
               <li data-i18n="evtCharityFeeAll">所有报名费在扣除运营成本后<strong>全部捐赠</strong></li>
-              <li data-i18n="evt_受益方公益基金待定">受益方：公益基金（待定）</li>
+              <li data-i18n="evt_受益方公益基金待定">受益方：公益基金（筹备中，敬请期待）</li>
               <li data-i18n="evt_帮助欠发达地区儿童获得运动机会">帮助欠发达地区儿童获得运动机会</li>
               <li data-i18n="evt_推动运动无障碍理念">推动"运动无障碍"理念</li>
               <li data-i18n="evt_摇跑运动对残疾人极其友好">摇跑运动对残疾人极其友好</li>
@@ -1133,18 +1196,7 @@
           </div></div>
       </div>
 
-      <!-- Energy Science -->
-      <div class="about-section about-tab-content" id="section-science" data-tab="science" style="display:none!important">
-        <div class="about-section-title"><i class="fas fa-flask"></i> <span data-i18n="navScience">活力科普</span></div>
-        <div class="about-content">
-          <p><strong data-i18n="scienceQ1">什么是摇跑活力指数？</strong></p>
-          <p data-i18n="scienceA1">摇跑活力指数（Energy Index）是通过RunOrb智能陀螺球采集用户运动数据，综合最高转速、一分钟里程、持续运动时间等多项核心指标，经科学加权算法计算得出的综合评分。指数范围0-30，数值越高代表上肢运动活力越强。</p>
-          <p><strong data-i18n="scienceQ2">为什么需要关注肢体活力？</strong></p>
-          <p data-i18n="scienceA2">随着智能机器人逐步普及，人类日常肢体活动量持续下降。研究表明，上肢力量和手部精细运动能力与大脑认知功能密切相关。定期进行摇跑等上肢运动，不仅能增强肌肉力量、改善关节灵活性，还能有效预防"鼠标手"、"手机脖"等现代职业病。</p>
-          <p><strong data-i18n="scienceQ3">摇跑适合哪些人群？</strong></p>
-          <p data-i18n="scienceA3">摇跑适合所有年龄段人群：儿童可锻炼手眼协调能力，成人可缓解工作疲劳、增强上肢力量，长者可延缓肌肉退化、保持关节灵活，康复人群可在医生指导下进行科学的上肢康复训练。</p>
-        </div>
-      </div>
+      <!-- Energy Science (inline in section-intro above) -->
 
       <!-- Team -->
       <div class="about-section">
@@ -1180,7 +1232,7 @@
       <div class="about-section about-tab-content" id="section-terms" data-tab="terms" style="display:none">
         <div class="about-section-title"><i class="fas fa-file-signature"></i> 用户服务协议</div>
         <div class="about-content">
-          <p><strong>1. 服务说明：</strong>RunOrb 摇跑活力指数排行榜（bazu-ranking.cn）为用户提供摇跑运动活力指数排名及相关服务。用户注册即表示同意遵守本协议所有条款。</p>
+          <p><strong>1. 服务说明：</strong>RunOrb 摇跑活力指数排行榜（bazu-ranking.com）为用户提供摇跑运动活力指数排名及相关服务。用户注册即表示同意遵守本协议所有条款。</p>
           <p><strong>2. 用户行为规范：</strong>用户应确保上传的所有运动数据真实有效，不得通过任何手段进行数据造假、恶意刷榜等违规行为。平台有权对违规行为进行处理，包括但不限于警告、数据清除、账号封禁等。</p>
           <p><strong>3. 知识产权：</strong>本平台所有内容（包括但不限于文字、图片、视频、标识、界面设计）均受知识产权法保护。未经授权，不得复制、转载或用于商业用途。</p>
           <p><strong>4. 免责声明：</strong>平台排名数据仅供参考，不构成任何运动建议或医疗建议。用户在进行摇跑运动时应注意安全，量力而行。因用户自身原因导致的任何损伤，平台不承担责任。</p>
@@ -1241,56 +1293,7 @@
         </div>
       </div>
 
-      <!-- 关于摇跑 -->
-      <div class="about-section about-tab-content" id="section-about-runorb" data-tab="about-runorb" style="display:none!important">
-        <div class="about-section-title"><i class="fas fa-running"></i> 关于摇跑</div>
-        <div class="about-content">
-          <h3 style="font-size:18px;margin-bottom:8px;color:var(--primary)">起源故事</h3>
-          <p style="font-size:15px;line-height:1.6;margin-bottom:16px">RunOrb（摇跑）是中国原创、拥有自主知识产权的创新健康运动。面对智能机器人逐步普及带来的肢体活动减少问题，RunOrb以1分钟快速测试为核心，通过专属设备与手机连接，精准检测身体活力指标。手部可动即可参与，全民友好，无需特殊操作。</p>
-
-          <h3 style="font-size:18px;margin-bottom:8px;color:var(--primary)">核心优势</h3>
-          <p style="font-size:15px;line-height:1.6;margin-bottom:16px">1分钟快速测试，精准量化活力指数；专属设备+手机APP，数据实时同步；全球排行榜，激发运动热情；科学健康，安全无风险。</p>
-
-          <h3 style="font-size:18px;margin-bottom:8px;color:var(--primary)">锻炼价值</h3>
-          <p style="font-size:15px;line-height:1.6;margin-bottom:16px">有效锻炼上肢力量、手部灵活性和心肺功能；缓解久坐带来的肩颈疲劳；适合各年龄段人群日常锻炼；可随时随地进行，不受场地限制。</p>
-
-          <h3 style="font-size:18px;margin-bottom:8px;color:var(--primary)">全民适配</h3>
-          <p style="font-size:15px;line-height:1.6;margin-bottom:16px">手部可动即可参与，全民友好，无需特殊操作。无论年龄、性别、身体条件，都能轻松上手。网站提供适配模式，支持屏幕朗读，确保每位用户都能顺畅使用。</p>
-        </div>
-
-        <!-- FAQ -->
-        <div class="about-section-title" style="margin-top:24px"><i class="fas fa-question-circle"></i> 常见问题</div>
-        <div style="margin-bottom:12px">
-          <input type="text" id="faqSearch2" placeholder="搜索问题..." style="width:100%;padding:12px 16px;border:1px solid var(--border);border-radius:8px;font-size:15px;box-sizing:border-box" aria-label="搜索常见问题">
-        </div>
-        <div id="faqContainer2">
-          <div class="faq-category">
-            <h4 style="font-size:16px;color:var(--primary);margin-bottom:12px">使用操作</h4>
-            <div class="faq-item"><strong>什么是活力指数？</strong><p>活力指数是综合衡量摇跑运动表现的核心指标，由最高转速和1分钟距离等数据综合计算得出。</p></div>
-            <div class="faq-item"><strong>如何参与排行榜？</strong><p>注册账号后，使用摇跑球完成运动，数据自动同步至排行榜。</p></div>
-            <div class="faq-item"><strong>如何查看个人数据？</strong><p>登录后点击导航栏"个人中心"，即可查看活力指数趋势、积分、徽章等。</p></div>
-            <div class="faq-item"><strong>排行榜数据多久更新？</strong><p>数据每30分钟与APP同步一次，排行榜实时展示最新数据。</p></div>
-            <div class="faq-item"><strong>如何点赞？</strong><p>登录后，在排行榜每行右侧点击爱心按钮即可点赞，再次点击可取消。</p></div>
-          </div>
-          <div class="faq-category">
-            <h4 style="font-size:16px;color:var(--primary);margin:16px 0 12px">数据同步</h4>
-            <div class="faq-item"><strong>数据同步失败怎么办？</strong><p>请检查手机蓝牙是否开启，确认APP已登录同一账号，然后点击"一键检查"。</p></div>
-            <div class="faq-item"><strong>网站和APP数据互通吗？</strong><p>是的，同一账号在网站和APP端数据完全同步一致。</p></div>
-            <div class="faq-item"><strong>最高转速和1分钟距离是什么？</strong><p>它们是活力指数的组成部分，不单独排行，仅在个人数据和排行榜条目中展示。</p></div>
-          </div>
-          <div class="faq-category">
-            <h4 style="font-size:16px;color:var(--primary);margin:16px 0 12px">分享功能</h4>
-            <div class="faq-item"><strong>如何分享我的活力指数？</strong><p>在排行榜或个人中心点击分享按钮，支持微信、微博、Facebook等平台。</p></div>
-            <div class="faq-item"><strong>分享有什么奖励？</strong><p>成功邀请好友注册并参与摇跑，邀请者可获得20积分。</p></div>
-          </div>
-          <div class="faq-category">
-            <h4 style="font-size:16px;color:var(--primary);margin:16px 0 12px">适配使用</h4>
-            <div class="faq-item"><strong>如何开启适配模式？</strong><p>点击页面右上角的适配模式图标即可开启，字体放大、界面简化。</p></div>
-            <div class="faq-item"><strong>支持哪些设备？</strong><p>支持手机（iOS 12+、Android 8+）、平板（iPadOS 12+、Android 8+）及主流浏览器。</p></div>
-            <div class="faq-item"><strong>支持屏幕朗读吗？</strong><p>支持，所有按钮和文字均添加了朗读标识，兼容VoiceOver、TalkBack等工具。</p></div>
-          </div>
-        </div>
-      </div>
+      <!-- 关于摇跑 (content inline in section-intro above) -->
 
       <!-- Usage Guide -->
       <div class="about-section about-tab-content" id="section-guide" data-tab="guide" style="display:none">
