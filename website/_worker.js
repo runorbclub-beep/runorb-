@@ -7,7 +7,7 @@ const KNOWN_FILES = new Set([
   '/', '/index.html', '/get-runorb.html',
   '/privacy.html', '/terms.html', '/404.html',
   '/robots.txt', '/sitemap.xml',
-  '/favicon.svg',
+  '/favicon.svg', '/favicon.png', '/og-image.svg',
   '/BingSiteAuth.xml',
   '/googled201f3458aabc561.html',
   '/baidu_verify_codeva-PynWpAHt3M.html',
@@ -23,7 +23,7 @@ function isValidPath(pathname) {
     if (pathname.startsWith(prefix)) return true;
   }
   // Allow known verification files
-  if (pathname.endsWith('.xml') || pathname.endsWith('.html') || pathname.endsWith('.mp4')) return true;
+  if (pathname.endsWith('.xml') || pathname.endsWith('.html') || pathname.endsWith('.mp4') || pathname.endsWith('.svg') || pathname.endsWith('.png')) return true;
   // Allow known doc paths
   if (pathname.includes('/docs/')) return true;
   return false;
@@ -43,54 +43,47 @@ export default {
       // Try to serve the custom 404 page
       try {
         const notFound = await env.ASSETS.fetch(new Request(new URL('/404.html', url)));
-        return new Response(notFound.body, {
-          status: 404,
-          statusText: 'Not Found',
-          headers: getSecurityHeaders(notFound.headers, 'text/html; charset=utf-8'),
-        });
+        const h = new Headers(notFound.headers);
+        h.set('Content-Type', 'text/html; charset=utf-8');
+        applySecurityHeaders(h);
+        return new Response(notFound.body, { status: 404, statusText: 'Not Found', headers: h });
       } catch {
-        return new Response('404 Not Found', {
-          status: 404,
-          headers: getSecurityHeaders(null, 'text/plain; charset=utf-8'),
-        });
+        const h = new Headers();
+        h.set('Content-Type', 'text/plain; charset=utf-8');
+        applySecurityHeaders(h);
+        return new Response('404 Not Found', { status: 404, headers: h });
       }
     }
 
     // Serve valid static assets
     const response = await env.ASSETS.fetch(request);
 
-    // Apply security headers
+    // Apply security headers (modify original response in-place to preserve CF headers)
+    const headers = new Headers(response.headers);
+    if (response.headers.get('content-type')) {
+      headers.set('Content-Type', response.headers.get('content-type'));
+    }
+    headers.set('X-Content-Type-Options', 'nosniff');
+    headers.set('X-Frame-Options', 'DENY');
+    headers.set('X-XSS-Protection', '1; mode=block');
+    headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), interest-cohort=()');
+
     return new Response(response.body, {
       status: response.status,
       statusText: response.statusText,
-      headers: getSecurityHeaders(response.headers, response.headers.get('content-type')),
+      headers,
     });
   },
 };
 
 // ========== Security Headers ==========
-function getSecurityHeaders(originalHeaders, contentType) {
-  const headers = new Headers();
-
-  // Preserve original headers
-  if (originalHeaders) {
-    for (const [key, value] of originalHeaders.entries()) {
-      headers.set(key, value);
-    }
-  }
-
-  // Override/add security headers
-  if (contentType) headers.set('Content-Type', contentType);
+function applySecurityHeaders(headers) {
   headers.set('X-Content-Type-Options', 'nosniff');
   headers.set('X-Frame-Options', 'DENY');
   headers.set('X-XSS-Protection', '1; mode=block');
   headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), interest-cohort=()');
-  // Remove Cloudflare NEL/report-to headers that expose server info
-  headers.delete('report-to');
-  headers.delete('nel');
-
-  return headers;
 }
 
 // ===================== API Router =====================
